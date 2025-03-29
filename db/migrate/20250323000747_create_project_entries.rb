@@ -7,7 +7,6 @@ class CreateProjectEntries < ActiveRecord::Migration[8.0]
       t.integer :priority
       t.string :description
       t.integer :status
-
       t.timestamps
     end
   end

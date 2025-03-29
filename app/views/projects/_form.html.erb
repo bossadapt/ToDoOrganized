@@ -11,16 +11,9 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :id, style: "display: block" %>
-    <%= form.number_field :id %>
-  </div>
 
-  <div>
-    <%= form.label :owner_id, style: "display: block" %>
-    <%= form.number_field :owner_id %>
-  </div>
 
+<div><%=current_user.first_name%></div>
   <div>
     <%= form.label :title, style: "display: block" %>
     <%= form.text_field :title %>

@@ -1,6 +1,8 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  before_action :user_is_owner, only: [ :edit, :update, :destroy ]
+  before_action :user_is_apart_of_project, only: [ :show ]
   # GET /comments or /comments.json
   def index
     @comments = Comment.all
@@ -18,7 +20,14 @@ class CommentsController < ApplicationController
   # GET /comments/1/edit
   def edit
   end
-
+  def user_is_owner
+    @comment = Comment.find_by(id: params[:id], author: current_user)
+    redirect_to projects_path, notice: "Only Owners of the comment is able to do this" if @comment.nil?
+  end
+  def user_is_apart_of_project
+    @comment = Comment.find_by(id: params[:id])
+    redirect_to projects_path, notice: "Not apart of project" if !comment.project.users.include?(current_user)
+  end
   # POST /comments or /comments.json
   def create
     @comment = Comment.new(comment_params)
@@ -37,7 +46,7 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1 or /comments/1.json
   def update
     respond_to do |format|
-      if @comment.update(comment_params)
+      if @comment.update(comment_create_params)
         format.html { redirect_to @comment, notice: "Comment was successfully updated." }
         format.json { render :show, status: :ok, location: @comment }
       else
@@ -64,7 +73,10 @@ class CommentsController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def comment_params
-      params.expect(comment: [ :id, :author_id, :title, :author_fullname, :project_id, :entry_id, :action_id, :body ])
+    def comment_create_params
+      params.expect(comment: [ :title, :body ])
+    end
+    def comment_show_params
+      params.expect(comment: [ :title, :body ])
     end
 end
