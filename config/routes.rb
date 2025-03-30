@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   resources :project_entries
   resources :projects
   devise_for :users
+  resources :users, only: [ :show ]
   # home
   root "home#index"
   # user
-  get "user/home"
-  get "user/projects"
+  #
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

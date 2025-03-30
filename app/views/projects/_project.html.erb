@@ -1,22 +1,13 @@
 <div id="<%= dom_id project %>">
-  <p>
-    <strong>Id:</strong>
-    <%= project.id %>
-  </p>
-
-  <p>
-    <strong>Owner:</strong>
-    <%= project.owner_id %>
-  </p>
-
-  <p>
-    <strong>Title:</strong>
-    <%= project.title %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= project.description %>
-  </p>
-
+  <%= turbo_frame_tag "project_edit" do %>
+  <div class="d-flex flex-row w-100">
+      <h1 class="w-50">
+        <%= link_to project.title, edit_project_path(@project) %> 
+      <h1>
+      <h6 class="w-40">
+        <%= project.description %>
+      </h6>
+      <%= button_to "Delete",  @project, method: :delete, class: "btn btn-secondary w-10 ml-auto mr-0px"%>
+  </div>
+  <% end %>
 </div>

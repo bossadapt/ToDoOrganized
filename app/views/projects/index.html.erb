@@ -2,4 +2,32 @@
 
 <% content_for :title, "Projects" %>
 
-<%= render "projects/header" %>
+<h1>Projects</h1>
+
+<div id="projects">
+  <div class="dropdown">
+    <button
+      class="btn btn-secondary dropdown-toggle"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      Select Project
+    </button>
+
+    <ul class="dropdown-menu">
+      <% @projects.each do |project| %>
+        <%= link_to project.title,
+        project_path(project), class: "dropdown-item", data: { turbo_frame:
+        "project_frame" }%> 
+      <% end %>
+    </ul>
+  </div>
+<%= turbo_frame_tag "project_frame" do %>
+  <div id="current_project">
+  </div>
+  <% end %>
+
+</div>
+
+<%= link_to "New project", new_project_path %>

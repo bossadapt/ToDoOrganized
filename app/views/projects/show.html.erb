@@ -1,11 +1,9 @@
 <p style="color: green"><%= notice %></p>
-<%= render "projects/header" %>
+<%= turbo_frame_tag "project_frame" do %>
+<%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
-<%= @project.users %>
-<%= render @project.actions %>
-<%= render @project.comments %>
+<%= render @actions %>
+<%= render @comments %>
 <div>
-  <%= link_to "Edit this project", edit_project_path(@project) %> 
-
-  <%= button_to "Destroy this project", @project, method: :delete %>
 </div>
+<% end %>

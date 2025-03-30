@@ -3,7 +3,30 @@ class ProjectEntriesController < ApplicationController
 
   # GET /project_entries or /project_entries.json
   def index
-    @project_entries = ProjectEntry.all
+    if !@project.nil?
+      @project_entries = ProjectEntry.find_by(project: @project)
+    else
+      @project_entries = ProjectEntry.find_by(user: current_user)
+    end
+    @new_entries = []
+    @assigned_entries = []
+    @accepted_entries = []
+    @in_progress_entries = []
+    @completed_entries = []
+    for entry in @project_entries
+      case entry.status
+      when "new"
+          @new_entries.push(entry)
+      when "assigned"
+          @assigned_entries.push(entry)
+      when "accepted"
+          @accepted_entries.push(entry)
+      when "in_progress"
+          @in_progress_entries.push(entry)
+      else
+          @completed_entries.push(entry)
+      end
+    end
   end
 
   # GET /project_entries/1 or /project_entries/1.json

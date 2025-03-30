@@ -11,8 +11,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-    @projects = Project.joins(:users).where(users: { id: current_user.id })
-    @focusedProject = @project
+    @users = @project.users
+    @actions = @project.actions
+    @comments = @project.comments
   end
 
   # GET /projects/new
