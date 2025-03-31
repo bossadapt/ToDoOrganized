@@ -1,42 +1,19 @@
 <div id="<%= dom_id comment %>">
-  <p>
-    <strong>Id:</strong>
-    <%= comment.id %>
-  </p>
-
-  <p>
-    <strong>Author:</strong>
-    <%= comment.author_id %>
-  </p>
-
-  <p>
-    <strong>Title:</strong>
-    <%= comment.title %>
-  </p>
-
-  <p>
-    <strong>Author fullname:</strong>
-    <%= comment.author_fullname %>
-  </p>
-
-  <p>
-    <strong>Project:</strong>
-    <%= comment.project_id %>
-  </p>
-
-  <p>
-    <strong>Entry:</strong>
-    <%= comment.entry_id %>
-  </p>
-
-  <p>
-    <strong>Action:</strong>
-    <%= comment.action_id %>
-  </p>
-
-  <p>
-    <strong>Body:</strong>
-    <%= comment.body %>
-  </p>
+      <div>
+        <div>
+          <h3>
+            <%= comment.title %>
+          </h3>
+          <h3>
+            <%= comment.updated_at %>
+          </h3>
+        </div>
+        <h3>
+          <%= comment.author_fullname %>
+        </h3>
+        <p>
+          <%= comment.body %>
+        </p>
+    </div>
 
 </div>

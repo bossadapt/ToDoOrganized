@@ -1,9 +1,17 @@
-<p style="color: green"><%= notice %></p>
 <%= turbo_frame_tag "project_frame" do %>
+<div>Show Called</div>
 <%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
-<%= render @actions %>
-<%= render @comments %>
+<div id= "entries">
+    <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries}%>
+</div>
+<div id="actions">
+    <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
+</div>
+<div id="comments">
+    <%= render "comments/comments", locals:{comments: @project.comments}%>
+</div>
 <div>
 </div>
 <% end %>
+<%= turbo_frame_tag%>

@@ -14,6 +14,7 @@ class ProjectsController < ApplicationController
     @users = @project.users
     @actions = @project.actions
     @comments = @project.comments
+    @project_entries = @project.project_entries
   end
 
   # GET /projects/new

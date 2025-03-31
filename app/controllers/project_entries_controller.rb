@@ -3,30 +3,7 @@ class ProjectEntriesController < ApplicationController
 
   # GET /project_entries or /project_entries.json
   def index
-    if !@project.nil?
-      @project_entries = ProjectEntry.find_by(project: @project)
-    else
       @project_entries = ProjectEntry.find_by(user: current_user)
-    end
-    @new_entries = []
-    @assigned_entries = []
-    @accepted_entries = []
-    @in_progress_entries = []
-    @completed_entries = []
-    for entry in @project_entries
-      case entry.status
-      when "new"
-          @new_entries.push(entry)
-      when "assigned"
-          @assigned_entries.push(entry)
-      when "accepted"
-          @accepted_entries.push(entry)
-      when "in_progress"
-          @in_progress_entries.push(entry)
-      else
-          @completed_entries.push(entry)
-      end
-    end
   end
 
   # GET /project_entries/1 or /project_entries/1.json
@@ -36,6 +13,7 @@ class ProjectEntriesController < ApplicationController
   # GET /project_entries/new
   def new
     @project_entry = ProjectEntry.new
+    @project_id =params[:project_id]
   end
 
   # GET /project_entries/1/edit
@@ -45,7 +23,13 @@ class ProjectEntriesController < ApplicationController
   # POST /project_entries or /project_entries.json
   def create
     @project_entry = ProjectEntry.new(project_entry_params)
-
+    @project_entry.author = current_user
+    Rails.logger.debug @project_entry.project
+    Rails.logger.debug "trying to print"
+    # Rails.logger.debug @project_id
+    # @project_entry.project = @project_id
+    @project_entry.author_fullname = current_user.first_name + " " + current_user.last_name
+    @project_entry.status = "new"
     respond_to do |format|
       if @project_entry.save
         format.html { redirect_to @project_entry, notice: "Project entry was successfully created." }

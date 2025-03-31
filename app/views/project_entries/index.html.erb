@@ -1,32 +1,6 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Project entries" %>
 
-<div id="project_entries">
-  <% @project_entries.each do |project_entry| %>
-    <%= render project_entry %>
-  <% end %>
-    @assigned_entries = []
-    @accepted_entries = []
-    @in_progress_entries = []
-    @completed_entries = []
-  <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">New</th>
-      <th scope="col">Assigned</th>
-      <th scope="col">Accepted</th>
-      <th scope="col">In Progress</th>
-      <th scope="col">Completed</th>
-    </tr>
-  </thead>
-  <tbody>
-     <% @new_entries.each do |entry| %>
-    <tr>
-      <td><%= entry %></td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<%= render "project_entries/project_entries", locals:{project_entries:@project.project_entries}%>
+
 
 <%= link_to "New project entry", new_project_entry_path %>
