@@ -1,5 +1,4 @@
 <%= turbo_frame_tag "project_frame" do %>
-<div>Show Called</div>
 <%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
 <div id= "entries">
@@ -8,10 +7,16 @@
 <div id="actions">
     <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
 </div>
-<div id="comments">
-    <%= render "comments/comments", locals:{comments: @project.comments}%>
-</div>
+    <%= link_to "new_comment",
+                new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"),
+                class: "btn btn--primary",
+                data: { turbo_frame: dom_id(Comment.new) } %>
+    <%= turbo_frame_tag Comment.new%>
+    <div>Comments</div>
+    <%= turbo_frame_tag "comments",  target:"_top" do%>
+        <%= render @project.comments.ordered %>
+    <% end %>
+
 <div>
 </div>
 <% end %>
-<%= turbo_frame_tag%>

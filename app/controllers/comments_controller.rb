@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   before_action :user_is_apart_of_project, only: [ :show ]
   # GET /comments or /comments.json
   def index
-    @comments = Comment.all
+    @comments = Comment.find_by(commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
   end
 
   # GET /comments/1 or /comments/1.json
@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @comment = Comment.new
+    @comment = Comment.new(project_id: params[:project_id], commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
   end
 
   # GET /comments/1/edit
@@ -30,14 +30,17 @@ class CommentsController < ApplicationController
   end
   # POST /comments or /comments.json
   def create
-    @comment = Comment.new(comment_params)
-
+    @comment = Comment.new(comment_create_params)
+    @comment.author = current_user
+    @comment.author_fullname = current_user.first_name + " " + current_user.last_name
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: "Comment was successfully created." }
-        format.json { render :show, status: :created, location: @comment }
+        format.turbo_stream
+        format.html { redirect_to comments_path, notice: "Quote was successfully created."  }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream
+        logger.debug "Array of errors"
+        logger.debug @comment.errors.to_a
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
@@ -74,7 +77,7 @@ class CommentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def comment_create_params
-      params.expect(comment: [ :title, :body ])
+      params.expect(comment: [ :title, :body, :project_id, :commentable_id, :commentable_type ])
     end
     def comment_show_params
       params.expect(comment: [ :title, :body ])

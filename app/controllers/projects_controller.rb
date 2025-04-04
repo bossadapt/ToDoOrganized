@@ -13,7 +13,6 @@ class ProjectsController < ApplicationController
   def show
     @users = @project.users
     @actions = @project.actions
-    @comments = @project.comments
     @project_entries = @project.project_entries
   end
 

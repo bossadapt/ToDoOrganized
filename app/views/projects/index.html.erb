@@ -1,21 +1,21 @@
 <h1>Projects</h1>
 
 <div id="projects">
-  <div class="dropdown">
+  <div class="dropdown" data-controller="dropdown">
     <button
       class="btn btn-secondary dropdown-toggle"
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      Select Project
+      <h5 text= "Select A Project"       data-dropdown-target="buttonText" > h4 text</h5>
     </button>
 
     <ul class="dropdown-menu">
       <% @projects.each do |project| %>
         <%= link_to project.title,
         project_path(project), class: "dropdown-item", data: { turbo_frame:
-        "project_frame" }%> 
+        "project_frame", action: "click->dropdown#select"} %> 
       <% end %>
       <%= link_to "New Project", new_project_path, class: "dropdown-item" %> 
     </ul>
