@@ -1,22 +1,17 @@
 <%= turbo_frame_tag "project_frame" do %>
 <%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
-<div id= "entries">
-    <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries}%>
-</div>
-<div id="actions">
-    <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
-</div>
-    <%= link_to "new_comment",
-                new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"),
-                class: "btn btn--primary",
-                data: { turbo_frame: dom_id(Comment.new) } %>
-    <%= turbo_frame_tag Comment.new%>
-    <div>Comments</div>
-    <%= turbo_frame_tag "comments",  target:"_top" do%>
-        <%= render @project.comments.ordered %>
-    <% end %>
-
-<div>
-</div>
+    <div id= "entries">
+        <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries}%>
+    </div>
+    <div id="actions">
+        <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
+    </div>
+    <div>
+        <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
+        <div>Comments</div>
+        <%= turbo_frame_tag "comments",  target:"_top" do%>
+            <%= render @project.comments.ordered %>
+        <% end %>
+    </div>
 <% end %>

@@ -3,7 +3,7 @@ class ProjectEntriesController < ApplicationController
 
   # GET /project_entries or /project_entries.json
   def index
-      @project_entries = ProjectEntry.find_by(user: current_user)
+      @project_entries = ProjectEntry.where(user: current_user)
   end
 
   # GET /project_entries/1 or /project_entries/1.json
@@ -32,10 +32,10 @@ class ProjectEntriesController < ApplicationController
     @project_entry.status = "new"
     respond_to do |format|
       if @project_entry.save
-        format.html { redirect_to @project_entry, notice: "Project entry was successfully created." }
+        format.turbo_stream
         format.json { render :show, status: :created, location: @project_entry }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream
         format.json { render json: @project_entry.errors, status: :unprocessable_entity }
       end
     end
