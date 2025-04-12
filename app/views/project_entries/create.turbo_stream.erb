@@ -1,6 +1,6 @@
 <% if @project_entry.persisted? %>
-    <%@new_project_entries = ProjectEntry.where(project_id: @project_entry.project)%>
-    <%= turbo_stream.replace "project_entries_tbody", partial: "project_entries/project_entries_table_body", locals: { project_entries:  @new_project_entries} %>
+    <% #@new_project_entries = ProjectEntry.where(project_id: @project_entry.project)%>
+    <%#= turbo_stream.replace "project_entries_tbody", partial: "project_entries/project_entries_table_body", locals: { project_entries:  @new_project_entries} %>
 <% else %>
     <%= turbo_stream.update "new_project_entry", partial: "project_entries/form" %>
 <% end %>

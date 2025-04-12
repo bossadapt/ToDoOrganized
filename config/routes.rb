@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :projects
   devise_for :users
   resources :users, only: [ :show ]
+  mount ActionCable.server => "/cable"
   # home
   root "home#index"
   # user

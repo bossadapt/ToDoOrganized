@@ -1,4 +1,5 @@
 <%= turbo_frame_tag "project_frame" do %>
+<%= turbo_stream_from @project %>
 <%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
     <div id= "entries">
