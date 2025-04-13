@@ -15,9 +15,8 @@
       <th scope="col">Completed</th>
     </tr>
   </thead>
-  <%= turbo_frame_tag "project_entries_body" do%>
-    <%render "project_entries/project_entries_table_body", locals:{ project_entries:@project_entries}%>
-  <% end %>
+  <%= render "project_entries/project_entries_table_body", locals: { project_entries: @project_entries } %>
+
 </table>
 </div>
 

@@ -32,10 +32,7 @@ class ProjectEntriesController < ApplicationController
     @project_entry.status = "new"
     respond_to do |format|
       if @project_entry.save
-        new_project_entries = ProjectEntry.where(project_id: @project_entry.project)
-        Turbo::StreamsChannel.broadcast_replace_to @project_id,
-        partial: "project_entries/project_entries_table_body",
-        locals: { project_entries: new_project_entries }
+        format.turbo_stream
         format.json { render :show, status: :created, location: @project_entry }
       else
         format.turbo_stream
