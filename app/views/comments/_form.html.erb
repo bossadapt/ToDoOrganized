@@ -1,4 +1,7 @@
-  <%= form_with(model: @comment) do |form| %>
+  <%= form_with model: @comment ,data: {
+    controller:"comment",
+    action: "turbo:submit-end->comment#clearForm"
+  } do |form| %>
     <%= form.hidden_field :project_id %>
     <%= form.hidden_field :commentable_id %>
     <%= form.hidden_field :commentable_type %>
@@ -17,14 +20,14 @@
         <div>
           <div>
             <h3>
-              <%= form.text_field :title %>
+              <%= form.text_field :title, data: { "comment-target": "title"}  %>
             </h3>
             <div>
-              <%= form.submit %>
+              <%= form.submit "Submit"%>
             </div>
           </div>
           <p>
-            <%= form.text_field :body %>
+            <%= form.text_field :body, data: { "comment-target": "body"}%>
           </p>
       </div>
         <% end %>

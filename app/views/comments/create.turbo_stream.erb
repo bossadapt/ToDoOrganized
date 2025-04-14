@@ -1,5 +1,0 @@
-<% if @comment.persisted? %>
-    <%= turbo_stream.update Comment.new, "" %>
-<% else %>
-    <%= turbo_stream.update Comment.new, partial: "comments/form" %>
-<% end %>
