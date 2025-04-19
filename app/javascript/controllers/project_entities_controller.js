@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
-    static targets = ["title","description","priority"]
+    static targets = ["title","description","priority","assigned"]
     clearForm(event){
         console.log("submit was called at least");
         
@@ -11,6 +11,7 @@ export default class extends Controller {
             this.titleTarget.value = ""
             this.descriptionTarget.value = ""
             this.priorityTarget.value = ""
+            this.assignedTarget.value = ""
         }
     }
 }

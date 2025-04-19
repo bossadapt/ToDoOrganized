@@ -28,7 +28,11 @@
     <%= form.label :priority, style: "display: block" %>
     <%= form.number_field :priority , data: { "project-entities-target": "priority"} %>
   </div>
-
+  <div>
+    <%= form.label :assigned, style: "display: block" %>
+    <% project = Project.find_by(id:@project_id)%>
+    <%= form.collection_select :assigned_id, project.users, :id, :full_name, { prompt: "Select a user" }, { data: { "project-entities-target": "assigned" } } %>
+  </div>
   <div>
     <%= form.submit "Submit"%>
   </div>

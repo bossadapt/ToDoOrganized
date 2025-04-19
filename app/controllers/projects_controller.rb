@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
   def show
     @users = @project.users
     @current_id = current_user.id
-    @current_fullname = current_user.first_name + current_user.last_name
+    @current_fullname = current_user.full_name
     @actions = @project.actions
     @project_entries = @project.project_entries
   end

@@ -38,12 +38,16 @@ class ProjectEntriesController < ApplicationController
   def create
     @project_entry = ProjectEntry.new(project_entry_params)
     @project_entry.author = current_user
-    Rails.logger.debug @project_entry.project
-    Rails.logger.debug "trying to print"
     # Rails.logger.debug @project_id
     # @project_entry.project = @project_id
     @project_entry.author_fullname = current_user.first_name + " " + current_user.last_name
-    @project_entry.status = "new"
+    if @project_entry.assigned.nil?
+      @project_entry.status = "new"
+    else
+      @project_entry.status = "assigned"
+      @project_entry.assigned_id = @project_entry.assigned.id
+      @project_entry.assigned_fullname = @project_entry.assigned.full_name
+    end
     respond_to do |format|
       if @project_entry.save
         format.turbo_stream
