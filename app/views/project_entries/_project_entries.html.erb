@@ -15,7 +15,10 @@
       <th scope="col">Completed</th>
     </tr>
   </thead>
-  <%= render "project_entries/project_entries_table_body", locals: { project_entries: @project_entries } %>
+  <% logger.debug "following 1324:"%>
+  <% logger.debug @current_id%>
+  <% logger.debug @current_fullname%>
+  <%= render "project_entries/project_entries_table_body", locals: { project_entries: @project_entries, current_id: @current_id, current_fullname: @current_fullname  } %>
 
 </table>
 </div>

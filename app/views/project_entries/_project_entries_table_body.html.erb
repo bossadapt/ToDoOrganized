@@ -27,31 +27,31 @@
      %>
       <tr>
         <% if !@new_entries[@counter].nil? %>
-          <td><%= render @new_entries[@counter] %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @new_entries[@counter],current_id: @current_id, current_fullname: @current_fullname } %></td>
         <% else %>  
         <td></td>
         <% end %>
 
         <% if !@assigned_entries[@counter].nil? %>
-          <td><%= render @assigned_entries[@counter] %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @assigned_entries[@counter] } %></td>
         <% else %>  
         <td></td>
         <% end %>
 
         <% if !@accepted_entries[@counter].nil? %>
-          <td><%= render @accepted_entries[@counter] %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @accepted_entries[@counter] } %></td>
         <% else %>  
         <td></td>
         <% end %>
 
         <% if !@in_progress_entries[@counter].nil? %>
-          <td><%= render @in_progress_entries[@counter] %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @in_progress_entries[@counter] } %></td>
         <% else %>  
         <td></td>
         <% end %>
 
         <% if !@completed_entries[@counter].nil? %>
-          <td><%= render @completed_entries[@counter] %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @completed_entries[@counter] } %></td>
         <% else %>  
         <td></td>
         <% end %>

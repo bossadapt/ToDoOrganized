@@ -1,6 +1,8 @@
 class ProjectEntriesController < ApplicationController
   before_action :set_project_entry, only: %i[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  before_action :user_is_edit_able, only: [ :edit, :update, :destroy ]
+  before_action :user_is_apart_of_project, only: [ :show, :edit, :update, :destroy ]
   # GET /project_entries or /project_entries.json
   def index
       @project_entries = ProjectEntry.where(user: current_user)
@@ -19,7 +21,19 @@ class ProjectEntriesController < ApplicationController
   # GET /project_entries/1/edit
   def edit
   end
-
+  def user_is_edit_able
+    @project_entry = ProjectEntry.where(id: params[:id])
+    .where("author_id = :user_id OR assigned_id = :user_id", user_id: current_user.id)
+    .first
+    if @project_entry.nil?
+      redirect_to projects_path, notice: "Only Creator or Assigned are able to edit this entryt" if !@project_entry.project.users.include?(current_user)
+    end
+  end
+  def user_is_apart_of_project
+    @project_entry = ProjectEntry.find(params[:id])
+    # flash.now[:notice] = "Update successful"
+    redirect_to projects_path, notice: "Not apart of project" if !@project_entry.project.users.include?(current_user)
+  end
   # POST /project_entries or /project_entries.json
   def create
     @project_entry = ProjectEntry.new(project_entry_params)
@@ -45,10 +59,10 @@ class ProjectEntriesController < ApplicationController
   def update
     respond_to do |format|
       if @project_entry.update(project_entry_params)
-        format.html { redirect_to @project_entry, notice: "Project entry was successfully updated." }
+        format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream
         format.json { render json: @project_entry.errors, status: :unprocessable_entity }
       end
     end

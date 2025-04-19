@@ -2,8 +2,11 @@
 <%= turbo_stream_from @project %>
 <%= render "projects/users_dropdown" , locals:{users: @users} %>
 <%= render @project %>
+    <% logger.debug "following show project:"%>
+  <% logger.debug @current_id%>
+  <% logger.debug @current_fullname%>
     <div id= "entries">
-        <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries}%>
+        <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries, current_id: @current_id, current_fullname: @current_fullname}%>
     </div>
     <div id="actions">
         <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>

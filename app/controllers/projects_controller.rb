@@ -12,6 +12,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1 or /projects/1.json
   def show
     @users = @project.users
+    @current_id = current_user.id
+    @current_fullname = current_user.first_name + current_user.last_name
     @actions = @project.actions
     @project_entries = @project.project_entries
   end

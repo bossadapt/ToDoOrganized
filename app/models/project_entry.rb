@@ -6,7 +6,15 @@ class ProjectEntry < ApplicationRecord
   has_many :comments, as: :commentable
 
   after_create_commit do
-    broadcast_update_to(
+    broadcast_replace_to(
+      project,
+      target: "project_entries_tbody",
+      partial: "project_entries/project_entries_table_body",
+      locals: { project_entries: project.project_entries }
+    )
+  end
+  after_update_commit do
+    broadcast_replace_to(
       project,
       target: "project_entries_tbody",
       partial: "project_entries/project_entries_table_body",
