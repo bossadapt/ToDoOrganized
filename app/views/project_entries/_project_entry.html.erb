@@ -11,8 +11,7 @@
     <%= project_entry.author_fullname + "(" +project_entry.author.id.to_s + ")"%>
   </p>
   <%= turbo_frame_tag "project_entry_edit", target: "_top" do%>
-  <% Rails.logger.debug "titititle:" + project_entry.title %>
-  <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
+    <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
   <% end %> 
 </div>
 <div>

@@ -87,7 +87,7 @@ class ProjectEntriesController < ApplicationController
     @project_entry.destroy!
 
     respond_to do |format|
-      format.html { redirect_to project_entries_path, status: :see_other, notice: "Project entry was successfully destroyed." }
+      format.turbo_stream
       format.json { head :no_content }
     end
   end

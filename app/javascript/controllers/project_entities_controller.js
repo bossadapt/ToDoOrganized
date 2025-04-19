@@ -2,8 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
     static targets = ["title","description","priority","assigned"]
     clearForm(event){
-        console.log("submit was called at least");
-        
         if (event.detail.success) {
             const modal = document.getElementById("newProjectEntryModal");
             const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modal)
@@ -29,4 +27,10 @@ export default class extends Controller {
         modalInstance.show();
         
       }
+      closeShowModal(){
+        const modal = document.getElementById("displayProjectEntryModal");
+        const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modal)
+        modalInstance.hide();
+        
+    }
 }
