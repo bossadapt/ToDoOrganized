@@ -1,8 +1,9 @@
 <% content_for :title, "Editing project entry" %>
 
 <h1>Editing project entry</h1>
-
-<%= render "form", project_entry: @project_entry %>
+  <%= turbo_frame_tag "project_entry_edit", target: "_top" do%>
+    <%= render "form_edit", project_entry: @project_entry %>
+  <% end %>
 
 <br>
 

@@ -5,12 +5,17 @@
     <% logger.debug "following show project:"%>
   <% logger.debug @current_id%>
   <% logger.debug @current_fullname%>
-    <div id= "entries">
+    <div id= "entries"> 
         <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries, current_id: @current_id, current_fullname: @current_fullname}%>
     </div>
     <div id="actions">
         <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
     </div>
+    <!-- TODO:allow them to enter edit mode in show popup, also allow them to be deleted --->
+    <!-- TODO:set up action history to record changes to both the project and individual project entries--->
+    <!-- TODO:attach action history to project entries with websocket as well--->
+    <!-- TODO:attach comments to action history --->
+
     <div>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
         <div>Comments</div>

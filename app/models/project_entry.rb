@@ -20,5 +20,16 @@ class ProjectEntry < ApplicationRecord
       partial: "project_entries/project_entries_table_body",
       locals: { project_entries: project.project_entries }
     )
+    Rails.logger.debug "self:" + self.id.to_s
+    Rails.logger.debug "project entry passed? :"
+    Rails.logger.debug self.id
+    Rails.logger.debug "project entry local? :"
+    Rails.logger.debug self.nil?
+    broadcast_replace_to(
+      project,
+      target: "project_entry_update_form",
+      partial: "project_entries/project_entry_editable_fields",
+      locals: { project_entry: self }
+    )
   end
 end

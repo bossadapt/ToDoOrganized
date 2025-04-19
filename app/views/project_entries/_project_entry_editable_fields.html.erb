@@ -1,0 +1,27 @@
+    <p>
+      <strong>Title:</strong>
+      <%= project_entry.title %>
+    </p>
+    <p>
+      <strong>Assigned:</strong>
+      <% if project_entry.assigned.nil? %>
+        Not Assigned yet
+      <% else project_entry.assigned.nil? %>
+        <%= project_entry.assigned_fullname + "(" +project_entry.assigned.id.to_s + ")" %>
+      <% end %>
+    </p>
+    <p>
+      <strong>Priority:</strong>
+      <%= project_entry.priority %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= project_entry.description %>
+    </p>
+
+    <p>
+      <strong>Status:</strong>
+      <%= project_entry.status %>
+    </p>
+  <%= link_to "Edit Mode Toggle", edit_project_entry_path(project_entry,project_id: project_entry.project.id), data: { turbo_frame:"project_entry_edit"} %>

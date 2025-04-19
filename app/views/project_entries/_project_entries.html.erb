@@ -4,7 +4,7 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProjectEntryModal">
   New Project Entry
 </button>
 
@@ -24,8 +24,8 @@
 </div>
 
 
-<!-- NEW POPUP -->
-<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Create Popup -->
+<div class="modal" id="newProjectEntryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -34,6 +34,20 @@
       </div>
       <div class="modal-body">
          <%= turbo_frame_tag "new_project_entry", src: new_project_entry_path(project_id: @project.id), target: "_top"%>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Show / Edit popup -->
+<div class="modal" id="displayProjectEntryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Project Entry</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <%= turbo_frame_tag "project_entry_frame", src: project_entry_path(@project_entries[0]), target: "_top"%>
       </div>
     </div>
   </div>

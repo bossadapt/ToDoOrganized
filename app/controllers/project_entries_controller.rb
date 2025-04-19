@@ -15,24 +15,29 @@ class ProjectEntriesController < ApplicationController
   # GET /project_entries/new
   def new
     @project_entry = ProjectEntry.new
-    @project_id =params[:project_id]
+    @project_entry.project = Project.find_by(id: params[:project_id])
   end
 
   # GET /project_entries/1/edit
   def edit
+    @project_entry = ProjectEntry.find(params[:id])
   end
   def user_is_edit_able
     @project_entry = ProjectEntry.where(id: params[:id])
     .where("author_id = :user_id OR assigned_id = :user_id", user_id: current_user.id)
     .first
     if @project_entry.nil?
-      redirect_to projects_path, notice: "Only Creator or Assigned are able to edit this entryt" if !@project_entry.project.users.include?(current_user)
+      Rails.logger.error "User tried to edit an item that it was not the author or asignee to"
+      redirect_to projects_path, notice: "Only Creator or Assigned are able to edit this entryt"
     end
   end
   def user_is_apart_of_project
     @project_entry = ProjectEntry.find(params[:id])
     # flash.now[:notice] = "Update successful"
-    redirect_to projects_path, notice: "Not apart of project" if !@project_entry.project.users.include?(current_user)
+    if !@project_entry.project.users.include?(current_user)
+      Rails.logger.error "User tried to see something when not apart of project"
+      redirect_to projects_path, notice: "Not apart of project"
+    end
   end
   # POST /project_entries or /project_entries.json
   def create
@@ -40,7 +45,7 @@ class ProjectEntriesController < ApplicationController
     @project_entry.author = current_user
     # Rails.logger.debug @project_id
     # @project_entry.project = @project_id
-    @project_entry.author_fullname = current_user.first_name + " " + current_user.last_name
+    @project_entry.author_fullname = current_user.full_name
     if @project_entry.assigned.nil?
       @project_entry.status = "new"
     else
@@ -61,11 +66,16 @@ class ProjectEntriesController < ApplicationController
 
   # PATCH/PUT /project_entries/1 or /project_entries/1.json
   def update
+    Rails.logger.debug "Rails UPDATER CALLED"
+    Rails.logger.debug @project_entry
+    Rails.logger.debug project_entry_params
     respond_to do |format|
       if @project_entry.update(project_entry_params)
         format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
       else
+        Rails.logger.debug "errors found:"
+        Rails.logger.debug @project_entry.errors
         format.turbo_stream
         format.json { render json: @project_entry.errors, status: :unprocessable_entity }
       end

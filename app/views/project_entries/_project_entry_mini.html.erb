@@ -20,8 +20,7 @@
     <% else %>
         <button disabled><</button>
   <% end %>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=<%="#popup-project_entry"+ project_entry.id.to_s%>>
-    
+      <button type="button" class="btn btn-primary" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value=<%= project_entry_path(project_entry) %>>
     <div class="d-flex flex-row">
       <h2>
           <%= project_entry.title %>
@@ -55,17 +54,4 @@
     <% else %>
   <button disabled>></button>
   <% end %>
-</div>
-<div class="modal" id=<%="popup-project_entry"+ project_entry.id.to_s%> tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Project Entry</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-         <%= turbo_frame_tag "project_entry", src: project_entry_path(project_entry), target: "_top"%>
-      </div>
-    </div>
-  </div>
 </div>
