@@ -39,8 +39,15 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @project.owner= current_user
     @project.users=[ current_user ]
+    @project.actions.push
     respond_to do |format|
       if @project.save
+        @project.actions.create(
+          author_id: current_user.id,
+          author_fullname: current_user.full_name,
+          action_type: "Create",
+          description: @project.to_description
+        )
         format.html { redirect_to @project, notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
       else
@@ -54,6 +61,12 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
+        @project.actions.create(
+          author_id: current_user.id,
+          author_fullname: current_user.full_name,
+          action_type: "Edit",
+          description: @project.to_description
+        )
         format.html { redirect_to @project, notice: "Project was successfully updated." }
         format.json { render :show, status: :ok, location: @project }
       else

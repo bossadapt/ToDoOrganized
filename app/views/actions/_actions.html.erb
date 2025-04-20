@@ -1,26 +1,15 @@
-
-<div id="project_entries">
 <h1>Action History</h1>
-  <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Entry ID</th>
-      <th scope="col">Action Type</th>
-      <th scope="col">Author</th>
-      <th scope="col">Description</th>
-      <th scope="col">Time</th>
-    </tr>
-  </thead>
-  <tbody>
+<div id="actions" class="d-flex flex-column w-100">
+  <div class="d-flex flex-row">
+      <h3 class="w-20">Entry ID</h3>
+      <h3 class="w-20">Action Type</h3>
+      <h3 class="w-20">Author</h3>
+      <h3 class="w-20">Description</h3>
+      <h3 class="w-20">Time</h3>
+  </div>
+    <div id="actions_body">
      <% for action in @actions%>
-      <tr>
-        <td><%action.id%></td>
-        <td><%action.action_type%></td>
-        <td><%action.user_id%></td>
-        <td><%action.description%></td>
-        <td><%action.created_at%></td>
-      </tr>
+        <%= render action%>
     <% end %>
-  </tbody>
-</table>
+    </div>
 </div>

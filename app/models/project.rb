@@ -4,4 +4,7 @@ class Project < ApplicationRecord
   has_many :actions
   has_many :comments
   has_many :project_entries
+  def to_description
+    "Project[Title: #{self.title} | Description: #{self.description}]"
+  end
 end

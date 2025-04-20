@@ -1,37 +1,14 @@
-<div id="<%= dom_id action %>">
-  <p>
-    <strong>Id:</strong>
-    <%= action.id %>
-  </p>
-
-  <p>
-    <strong>Project:</strong>
-    <%= action.project_id %>
-  </p>
-
-  <p>
-    <strong>User:</strong>
-    <%= action.user_id %>
-  </p>
-
-  <p>
-    <strong>User fullname:</strong>
-    <%= action.user_fullname %>
-  </p>
-
-  <p>
-    <strong>Entry:</strong>
-    <%= action.entry_id %>
-  </p>
-
-  <p>
-    <strong>Type:</strong>
-    <%= action.type %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= action.description %>
-  </p>
-
+<div id="<%= dom_id action %>" class="d-flex flex-row w-100">
+          <h3 class="w-20">
+            <%if action.project_entry.nil?%>
+              Project
+            <%else %>
+              <%=action.project_entry.id%>
+            <%end %>
+          </h3>
+          <h3 class="w-20"><%=action.action_type%></h3>
+          <h3 class="w-20"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h3>
+          <p class="w-20"><%=action.description%></p>
+          <h3 class="w-20"><%=action.created_at%></h3>
 </div>
+

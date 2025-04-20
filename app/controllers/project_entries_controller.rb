@@ -55,6 +55,13 @@ class ProjectEntriesController < ApplicationController
     end
     respond_to do |format|
       if @project_entry.save
+        @project_entry.actions.create(
+          author_id: current_user.id,
+          author_fullname: current_user.full_name,
+          action_type: "Create",
+          project_id: @project_entry.project.id,
+          description: @project_entry.to_description
+        )
         format.turbo_stream
         format.json { render :show, status: :created, location: @project_entry }
       else
@@ -66,11 +73,15 @@ class ProjectEntriesController < ApplicationController
 
   # PATCH/PUT /project_entries/1 or /project_entries/1.json
   def update
-    Rails.logger.debug "Rails UPDATER CALLED"
-    Rails.logger.debug @project_entry
-    Rails.logger.debug project_entry_params
     respond_to do |format|
       if @project_entry.update(project_entry_params)
+        @project_entry.actions.create(
+          author_id: current_user.id,
+          author_fullname: current_user.full_name,
+          action_type: "Edit",
+          project_id: @project_entry.project.id,
+          description: @project_entry.to_description
+        )
         format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
       else
@@ -84,6 +95,13 @@ class ProjectEntriesController < ApplicationController
 
   # DELETE /project_entries/1 or /project_entries/1.json
   def destroy
+    @project_entry.actions.create(
+      author_id: current_user.id,
+      author_fullname: current_user.full_name,
+      action_type: "Delete",
+      project_id: @project_entry.project.id,
+      description: @project_entry.to_description
+    )
     @project_entry.destroy!
 
     respond_to do |format|

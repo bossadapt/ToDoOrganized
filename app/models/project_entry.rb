@@ -35,4 +35,7 @@ class ProjectEntry < ApplicationRecord
       locals: { project_entry: self }
     )
   end
+  def to_description
+    "Project Entry[Title: #{self.title} |Assigned: #{self.assigned}|Description: #{self.description}| Priority: #{self.priority}]"
+  end
 end
