@@ -10,7 +10,6 @@
       </ul>
     </div>
   <% end %>
-  <%= form.hidden_field :project_id, value: project_entry.project.id %>
   <!-- User inputs-->
   <div>
     <%= form.label :title, style: "display: block" %>
@@ -27,7 +26,10 @@
   </div>
   <div>
     <%= form.label :assigned, style: "display: block" %>
-    <%= form.collection_select :assigned_id, project_entry.project.users, :id, :full_name, { prompt: "Unassigned" } %>
+    <%= form.select :assigned_id,
+      options_for_select([["Unassigned", ""]] + project_entry.project.users.map { |u| [u.full_name, u.id] },
+      project_entry.assigned.nil? ? "" : project_entry.assigned.id),
+      { data: { "project-entities-target": "assigned" } } %>
   </div>
   <div>
     <%= form.submit "Submit"%>

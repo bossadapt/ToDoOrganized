@@ -15,10 +15,13 @@
   <% end %> 
 </div>
 <div>
-        <h2>Comments</h2>
-        <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>
-        <%= turbo_frame_tag "comments",  target:"_top" do%>
-          <%= render project_entry.comments.ordered %>
-        <% end %>
+  <div id="actions">
+        <%= render "actions/actions", actions: project_entry.actions.ordered %>
+    </div>
+    <h2>Comments</h2>
+    <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>
+    <%= turbo_frame_tag "comments",  target:"_top" do%>
+      <%= render project_entry.comments.ordered %>
+    <% end %>
     </div>
 <% end %>

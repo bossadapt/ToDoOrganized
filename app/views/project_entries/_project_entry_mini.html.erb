@@ -36,7 +36,7 @@
 
   <% case project_entry.status %>
     <% when "new" %>
-      <%= button_to project_entry_path(project_entry), method: :patch, params: { project_entry: { status: "assigned", assigned_id:  @current_id, assigned_fullname: @current_fullname} } do %>
+      <%= button_to project_entry_path(project_entry), method: :patch, params: { project_entry: { status: "assigned" }} do %>
         >
       <% end %>
     <% when "assigned" %>

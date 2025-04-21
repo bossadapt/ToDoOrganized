@@ -1,6 +1,6 @@
   <tbody id="project_entries_tbody">
     <%
-    if @project_entries.nil?
+    if project_entries.nil?
       @project_entries = project_entries
     end
     @new_entries = []
@@ -27,7 +27,7 @@
      %>
       <tr>
         <% if !@new_entries[@counter].nil? %>
-          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @new_entries[@counter],current_id: @current_id, current_fullname: @current_fullname } %></td>
+          <td><%= render partial: "project_entries/project_entry_mini", locals: { project_entry: @new_entries[@counter] } %></td>
         <% else %>  
         <td></td>
         <% end %>

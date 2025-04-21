@@ -3,6 +3,7 @@ class Action < ApplicationRecord
   belongs_to :project
   belongs_to :project_entry, optional: true
   has_many :comments, as: :commentable
+  scope :ordered, -> { order(created_at: :desc) }
   after_create_commit do
     broadcast_prepend_to(
       project,

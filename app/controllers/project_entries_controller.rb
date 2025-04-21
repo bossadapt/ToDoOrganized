@@ -46,12 +46,12 @@ class ProjectEntriesController < ApplicationController
     # Rails.logger.debug @project_id
     # @project_entry.project = @project_id
     @project_entry.author_fullname = current_user.full_name
-    if @project_entry.assigned.nil?
-      @project_entry.status = "new"
-    else
+    if @project_entry.assigned.present?
       @project_entry.status = "assigned"
       @project_entry.assigned_id = @project_entry.assigned.id
       @project_entry.assigned_fullname = @project_entry.assigned.full_name
+    else
+      @project_entry.status = "new"
     end
     respond_to do |format|
       if @project_entry.save
@@ -73,14 +73,30 @@ class ProjectEntriesController < ApplicationController
 
   # PATCH/PUT /project_entries/1 or /project_entries/1.json
   def update
+    @action_type, @descriptionOfChange = "", ""
+    safe_params = project_entry_params.to_h
+
+    if safe_params[:status].present?
+      handle_move_change(safe_params)
+      if safe_params[:status] == "assigned"
+        safe_params[:assigned_id] = current_user.id
+      end
+    else
+      handle_edit_changes(safe_params)
+    end
+    if @project_entry.assigned_id.to_s != safe_params[:assigned_id].to_s
+      handle_assigned_change(safe_params)
+    end
+    return if @descriptionOfChange.blank?
+
     respond_to do |format|
-      if @project_entry.update(project_entry_params)
+      if @project_entry.update(safe_params)
         @project_entry.actions.create(
           author_id: current_user.id,
           author_fullname: current_user.full_name,
-          action_type: "Edit",
+          action_type: @action_type,
           project_id: @project_entry.project.id,
-          description: @project_entry.to_description
+          description: @descriptionOfChange
         )
         format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
@@ -111,6 +127,41 @@ class ProjectEntriesController < ApplicationController
   end
 
   private
+  def handle_move_change(safe_params)
+    @action_type = "Move"
+    @descriptionOfChange = "Moved from '#{@project_entry.status}' to '#{safe_params[:status]}'"
+  end
+
+  def handle_edit_changes(safe_params)
+    @action_type = "Edit"
+
+    track_field_change("Title", @project_entry.title, safe_params[:title])
+    track_field_change("Description", @project_entry.description, safe_params[:description])
+    track_field_change("Priority", @project_entry.priority.to_s, safe_params[:priority].to_s)
+  end
+
+  def track_field_change(label, old_val, new_val)
+    return if old_val == new_val
+    @descriptionOfChange += "#{label}: '#{old_val}' to '#{new_val}'\n"
+  end
+
+  def handle_assigned_change(safe_params)
+    old_name = @project_entry.assigned_fullname.presence || "unassigned"
+    new_name = safe_params[:assigned_fullname].presence || ""
+
+    if safe_params[:assigned_id].present?
+      user = User.find_by(id: safe_params[:assigned_id])
+      new_name = user&.full_name || "unknown"
+      safe_params[:assigned_fullname] = new_name
+    else
+      safe_params[:assigned_fullname] = ""
+      new_name = "unassigned"
+    end
+
+    old_str = "#{old_name}(#{@project_entry.assigned_id || ''})"
+    new_str = "#{new_name}(#{safe_params[:assigned_id] || ''})"
+    @descriptionOfChange += "Assigned: #{old_str} to #{new_str}\n"
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_project_entry
       @project_entry = ProjectEntry.find(params.expect(:id))
@@ -118,6 +169,6 @@ class ProjectEntriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_entry_params
-      params.expect(project_entry: [ :id, :creator_id, :creator_fullname, :assigned_id, :assigned_fullname, :project_id, :title, :priority, :description, :status ])
+      params.expect(project_entry: [ :id, :assigned_id, :project_id, :title, :priority, :description, :status ])
     end
 end

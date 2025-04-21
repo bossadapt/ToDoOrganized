@@ -8,7 +8,7 @@
           </h3>
           <h3 class="w-20"><%=action.action_type%></h3>
           <h3 class="w-20"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h3>
-          <p class="w-20"><%=action.description%></p>
+          <%=simple_format(action.description,class: "w-20")%>
           <h3 class="w-20"><%=action.created_at%></h3>
 </div>
 

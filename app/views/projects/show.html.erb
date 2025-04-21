@@ -1,19 +1,20 @@
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
-<%= render "projects/users_dropdown" , locals:{users: @users} %>
+<%= render "projects/users_dropdown", users: @project.users %>
 <%= render @project %>
-    <% logger.debug "following show project:"%>
-  <% logger.debug @current_id%>
-  <% logger.debug @current_fullname%>
     <div id= "entries"> 
-        <%= render "project_entries/project_entries", locals:{project: @project, project_entries:@project.project_entries, current_id: @current_id, current_fullname: @current_fullname}%>
+        <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
     <div id="actions">
-        <%= render "actions/actions", locals:{project: @project, project_entries:@project.project_entries}%>
+        <%= render "actions/actions", actions: @project.actions.ordered %>
     </div>
-    <!-- TODO:set up action history to record changes to both the project and individual project entries--->
-    <!-- TODO:attach action history to project entries with websocket as well--->
-    <!-- TODO:attach comments to action history --->
+    <!-- TODO: move the projects dropdown to the nav bar and disallow resellecting the project thats already focused--->
+    <!-- TODO: fix the after project button click, the users button no longer works --->
+    <!-- TODO: add a page you can visit individual actions and add comments --->
+    <!-- TODO: add paging to both the comments and actions so they can get pas some and not load 100s --->
+    <!-- TODO: make invite table with expiration times that get checked before action happens, peform maintnance manually--->
+    <!-- TODO: actually add the footer --->
+
 
     <div>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>

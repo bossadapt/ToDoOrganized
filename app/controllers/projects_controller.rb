@@ -11,10 +11,6 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-    @users = @project.users
-    @current_id = current_user.id
-    @current_fullname = current_user.full_name
-    @actions = @project.actions
     @project_entries = @project.project_entries
   end
 
@@ -39,7 +35,6 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @project.owner= current_user
     @project.users=[ current_user ]
-    @project.actions.push
     respond_to do |format|
       if @project.save
         @project.actions.create(

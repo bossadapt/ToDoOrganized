@@ -4,10 +4,10 @@
     </p>
     <p>
       <strong>Assigned:</strong>
-      <% if project_entry.assigned.nil? %>
-        Not Assigned yet
-      <% else project_entry.assigned.nil? %>
+      <% if project_entry.assigned.present? %>
         <%= project_entry.assigned_fullname + "(" +project_entry.assigned.id.to_s + ")" %>
+      <% else %>
+          Not Assigned yet
       <% end %>
     </p>
     <p>
