@@ -7,6 +7,15 @@
       <h6 class="w-40">
         <%= project.description %>
       </h6>
+      
+        <button class= "btn btn-primary" 
+        data-controller="clipboard"
+        data-action= "click->clipboard#generate" 
+        data-clipboard-url-value = "<%= generate_invite_project_path(@project)%>">
+          Generate Invite
+        </button>
+  
+
       <%= button_to "Delete",  @project, method: :delete, class: "btn btn-secondary w-10 ml-auto mr-0px"%>
   </div>
   <% end %>

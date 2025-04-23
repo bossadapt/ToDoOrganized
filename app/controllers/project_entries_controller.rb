@@ -84,7 +84,7 @@ class ProjectEntriesController < ApplicationController
     else
       handle_edit_changes(safe_params)
     end
-    if @project_entry.assigned_id.to_s != safe_params[:assigned_id].to_s
+    if safe_params.key?(:assigned_id) && @project_entry.assigned_id.to_s != safe_params[:assigned_id].to_s
       handle_assigned_change(safe_params)
     end
     return if @descriptionOfChange.blank?
@@ -129,7 +129,7 @@ class ProjectEntriesController < ApplicationController
   private
   def handle_move_change(safe_params)
     @action_type = "Move"
-    @descriptionOfChange = "Moved from '#{@project_entry.status}' to '#{safe_params[:status]}'"
+    @descriptionOfChange = "Moved from '#{@project_entry.status}' to '#{safe_params[:status]}'\n"
   end
 
   def handle_edit_changes(safe_params)
@@ -151,7 +151,7 @@ class ProjectEntriesController < ApplicationController
 
     if safe_params[:assigned_id].present?
       user = User.find_by(id: safe_params[:assigned_id])
-      new_name = user&.full_name || "unknown"
+      new_name = user&.full_name || "Not Found"
       safe_params[:assigned_fullname] = new_name
     else
       safe_params[:assigned_fullname] = ""

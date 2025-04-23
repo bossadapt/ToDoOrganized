@@ -6,14 +6,16 @@
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
     <div id="actions">
-        <%= render "actions/actions", actions: @project.actions.ordered %>
+        <%= render "actions/actions", actions: @project.actions.ordered , parent:""%>
     </div>
-    <!-- TODO: move the projects dropdown to the nav bar and disallow resellecting the project thats already focused--->
+    <!-- TODO: figure out whats wrong with projects dropdown and disallow resellecting the project thats already focused--->
     <!-- TODO: fix the after project button click, the users button no longer works --->
+    <!-- TODO: Handle rejections with alternative websocket stuff, like for project entities editing--->
     <!-- TODO: add a page you can visit individual actions and add comments --->
     <!-- TODO: add paging to both the comments and actions so they can get pas some and not load 100s --->
     <!-- TODO: make invite table with expiration times that get checked before action happens, peform maintnance manually--->
     <!-- TODO: actually add the footer --->
+    <!-- TODO: Make projects and project entities deletable--->
 
 
     <div>

@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ show edit update destroy ]
+  before_action :set_project, only: %i[ show edit update destroy generate_invite use_invite]
   before_action :authenticate_user!
-  before_action :user_is_owner, only: [ :edit, :update, :destroy ]
+  before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite ]
   before_action :user_is_apart_of_project, only: [ :show ]
   # GET /projects or /projects.json
   def index
@@ -78,6 +78,42 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to projects_path, status: :see_other, notice: "Project was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+  # GET /projects/1/generate-invite/
+  def generate_invite
+    code_generated = SecureRandom.uuid
+    invite = @project.project_invites.create(
+      link_code: code_generated,
+      expiration: DateTime.now + 1
+    )
+    if invite.persisted?
+      link_generated =  "#{request.base_url}/projects/#{@project.id}/use-invite/#{code_generated}"
+      respond_to do |format|
+        format.turbo_stream
+        format.json { render json: { link: link_generated } }
+      end
+    else
+      head :unprocessable_entity
+    end
+  end
+  # GET /projects/1/use-invite/123423-234asdf34-234234-2asdf4
+  def use_invite
+    @project = Project.find(params[:id])
+    invite_code = params[:invite_code]
+    project_invite = @project.project_invites.find_by(link_code: invite_code)
+    if project_invite.present? && project_invite.expiration > DateTime.now
+      if !@project.users.include?(current_user)
+        @project.users << current_user
+        @project.save
+        redirect_to project_path(@project), notice: "Joined Project"
+        Rails.logger.info "Invite: #{project_invite.inspect} 312"
+      end
+        redirect_to project_path(@project), alert: "Already Apart of this project"
+        Rails.logger.info "ALREADY IN 312"
+    else
+        redirect_to root_path, alert: "Invite expired or invalid"
+        Rails.logger.info "FAILED TO FIND 312"
     end
   end
 

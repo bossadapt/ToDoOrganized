@@ -6,7 +6,7 @@ class Action < ApplicationRecord
   scope :ordered, -> { order(created_at: :desc) }
   after_create_commit do
     broadcast_prepend_to(
-      project,
+      self.project,
       target: "actions_body",
       partial: "actions/action",
       locals: { action: self }
@@ -14,7 +14,7 @@ class Action < ApplicationRecord
     if !self.project_entry.nil?
       broadcast_prepend_to(
         self.project_entry,
-        target: "actions_body",
+        target: self.project_entry.id.to_s + "actions_body",
         partial: "actions/action",
         locals: { action: self }
         )

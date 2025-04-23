@@ -1,14 +1,11 @@
   <tbody id="project_entries_tbody">
     <%
-    if project_entries.nil?
-      @project_entries = project_entries
-    end
     @new_entries = []
     @assigned_entries = []
     @accepted_entries = []
     @in_progress_entries = []
     @completed_entries = []
-    for entry in @project_entries
+    for entry in project_entries
       case entry.status
       when "new"
           @new_entries.push(entry)

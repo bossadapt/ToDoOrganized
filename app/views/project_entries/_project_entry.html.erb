@@ -16,7 +16,7 @@
 </div>
 <div>
   <div id="actions">
-        <%= render "actions/actions", actions: project_entry.actions.ordered %>
+        <%= render "actions/actions", actions: project_entry.actions.ordered, parent: project_entry.id.to_s %>
     </div>
     <h2>Comments</h2>
     <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>

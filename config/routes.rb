@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   resources :comments
   resources :actions
   resources :project_entries
-  resources :projects
+  resources :projects do
+    member do
+      get "generate-invite", to: "projects#generate_invite"
+      get "use-invite/:invite_code", to: "projects#use_invite", as: :use_invite
+    end
+  end
   devise_for :users
   resources :users, only: [ :show ]
   mount ActionCable.server => "/cable"
