@@ -23,12 +23,24 @@ class ProjectsController < ApplicationController
   def edit
   end
   def user_is_owner
-    @project = Project.find_by(id: params[:id], owner: current_user)
-    redirect_to projects_path, notice: "Only Owners are able to complete this task" if @project.nil?
+    @project = Project.find_by(id: params[:id], owner_id: current_user.id)
+    # TODO: Completed 500 Internal Server Error in 31ms (ActiveRecord: 3.5ms (3 queries, 0 cached) | GC: 1.1ms) for generating link
+    if @project.nil?
+      Rails.debugger "debug as inteded 555666"
+      flash.now[:notice] = "Only the owner can edit, delete or generate invites for the project"
+      render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+    end
   end
   def user_is_apart_of_project
     @project = Project.find(params[:id])
     redirect_to projects_path, notice: "Not apart of project" if !@project.users.include?(current_user)
+  end
+  def show_all_actions
+    @project = Project.find(params[:id])
+    @actions = @project.actions.ordered
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
   # POST /projects or /projects.json
   def create
@@ -83,6 +95,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/generate-invite/
   def generate_invite
     code_generated = SecureRandom.uuid
+    Rails.debugger "tried to debug despite it should have failed 555666"
     invite = @project.project_invites.create(
       link_code: code_generated,
       expiration: DateTime.now + 1

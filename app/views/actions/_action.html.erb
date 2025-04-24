@@ -1,14 +1,14 @@
 <div id="<%= dom_id action %>" class="d-flex flex-row w-100">
-          <h3 class="w-20">
+          <h4 class="w-20">
             <%if action.project_entry.nil?%>
               Project
             <%else %>
               <%=action.project_entry.id%>
             <%end %>
-          </h3>
-          <h3 class="w-20"><%=action.action_type%></h3>
-          <h3 class="w-20"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h3>
+          </h4>
+          <h4 class="w-20"><%=action.action_type%></h4>
+          <h4 class="w-20"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h4>
           <%=simple_format(action.description,class: "w-20")%>
-          <h3 class="w-20"><%=action.created_at%></h3>
+          <h3 class="w-20"><%= action.created_at.strftime("%H:%M %m/%d/%Y") %></h3>
 </div>
 

@@ -1,3 +1,5 @@
+<h1>Projects</h1>
+<%= render "projects/projects_dropdown", projects:Project.where(owner_id: current_user.id) %>
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
 <%= render "projects/users_dropdown", users: @project.users %>
@@ -5,18 +7,13 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <div id="actions">
-        <%= render "actions/actions", actions: @project.actions.ordered , parent:""%>
-    </div>
-    <!-- TODO: figure out whats wrong with projects dropdown and disallow resellecting the project thats already focused--->
-    <!-- TODO: fix the after project button click, the users button no longer works --->
     <!-- TODO: Handle rejections with alternative websocket stuff, like for project entities editing--->
-    <!-- TODO: add a page you can visit individual actions and add comments --->
-    <!-- TODO: add paging to both the comments and actions so they can get pas some and not load 100s --->
-    <!-- TODO: make invite table with expiration times that get checked before action happens, peform maintnance manually--->
+    <!-- TODO: fix the after project button click, the users button no longer works --->
     <!-- TODO: actually add the footer --->
     <!-- TODO: Make projects and project entities deletable--->
-
+    <!-- TODO: Add user page to keep them updated -->
+    <!-- TODO: Clean CS for everything(login, landing page-->
+    <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
@@ -24,5 +21,15 @@
         <%= turbo_frame_tag "comments",  target:"_top" do%>
             <%= render @project.comments.ordered %>
         <% end %>
+    </div>
+    <div id="actions">
+        <%= render "actions/actions", actions: @project.actions.ordered.limit(10) , parent:""%>
+        
+  <%= button_to "Show All", 
+      show_all_actions_project_path(@project),
+      method: :get,
+      remote: true,
+      form: { data: { turbo_stream: true } },
+      class: "btn btn-sm btn-link mt-2" %>
     </div>
 <% end %>

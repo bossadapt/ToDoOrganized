@@ -1,6 +1,7 @@
 class ActionsController < ApplicationController
-  before_action :set_action, only: %i[ show edit update destroy ]
-
+  before_action :set_action, only: %i[ user_is_apart_of_project show edit update destroy ]
+  before_action :authenticate_user!
+  before_action :user_is_apart_of_project
   # GET /actions or /actions.json
   def index
     @actions = Action.all
@@ -15,10 +16,12 @@ class ActionsController < ApplicationController
     @action = Action.new
   end
 
-  # GET /actions/1/edit
-  def edit
+  def user_is_apart_of_project
+    # flash.now[:notice] = "Update successful"
+    if !@action.project.users.include?(current_user)
+      redirect_to projects_path, notice: "Not apart of project"
+    end
   end
-
   # POST /actions or /actions.json
   def create
     @action = Action.new(action_params)
@@ -44,16 +47,6 @@ class ActionsController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @action.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /actions/1 or /actions/1.json
-  def destroy
-    @action.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to actions_path, status: :see_other, notice: "Action was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

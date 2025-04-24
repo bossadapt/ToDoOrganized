@@ -27,15 +27,14 @@ class ProjectEntriesController < ApplicationController
     .where("author_id = :user_id OR assigned_id = :user_id", user_id: current_user.id)
     .first
     if @project_entry.nil?
-      Rails.logger.error "User tried to edit an item that it was not the author or asignee to"
-      redirect_to projects_path, notice: "Only Creator or Assigned are able to edit this entryt"
+      flash.now[:notice] = "Only Creator or Assigned can edit or delete this entry"
+      render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
     end
   end
   def user_is_apart_of_project
     @project_entry = ProjectEntry.find(params[:id])
     # flash.now[:notice] = "Update successful"
     if !@project_entry.project.users.include?(current_user)
-      Rails.logger.error "User tried to see something when not apart of project"
       redirect_to projects_path, notice: "Not apart of project"
     end
   end
@@ -101,8 +100,6 @@ class ProjectEntriesController < ApplicationController
         format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
       else
-        Rails.logger.debug "errors found:"
-        Rails.logger.debug @project_entry.errors
         format.turbo_stream
         format.json { render json: @project_entry.errors, status: :unprocessable_entity }
       end

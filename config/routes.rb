@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     member do
       get "generate-invite", to: "projects#generate_invite"
       get "use-invite/:invite_code", to: "projects#use_invite", as: :use_invite
+      get "show_all_actions", to: "projects#show_all_actions", as: :show_all_actions
     end
   end
   devise_for :users

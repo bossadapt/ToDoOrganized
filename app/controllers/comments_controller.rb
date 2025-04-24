@@ -1,9 +1,9 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: %i[ show edit update destroy ]
+  before_action :set_comment, only: %i[ show ]
   before_action :authenticate_user!
-  before_action :user_is_owner, only: [ :edit, :update, :destroy ]
   before_action :user_is_apart_of_project, only: [ :show ]
   # GET /comments or /comments.json
+  # TODO: remove routes for delte, updatae, edit
   def index
     @comments = Comment.find_by(commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
   end
@@ -17,9 +17,6 @@ class CommentsController < ApplicationController
     @comment = Comment.new(project_id: params[:project_id], commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
   end
 
-  # GET /comments/1/edit
-  def edit
-  end
   def user_is_owner
     @comment = Comment.find_by(id: params[:id], author: current_user)
     redirect_to projects_path, notice: "Only Owners of the comment is able to do this" if @comment.nil?
@@ -59,15 +56,6 @@ class CommentsController < ApplicationController
     end
   end
 
-  # DELETE /comments/1 or /comments/1.json
-  def destroy
-    @comment.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to comments_path, status: :see_other, notice: "Comment was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

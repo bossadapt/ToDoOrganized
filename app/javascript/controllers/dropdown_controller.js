@@ -1,8 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["buttonText"]
-    select(event){
-        this.buttonTextTarget.innerText = event.target.text
+  toggle(event) {
+    event.preventDefault()
+
+    if (!this.dropdown) {
+      this.dropdown = new window.bootstrap.Dropdown(this.element)
     }
+
+    this.dropdown.toggle()
+  }
 }

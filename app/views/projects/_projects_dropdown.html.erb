@@ -1,0 +1,18 @@
+  <div class="dropdown">
+    <button
+    class="btn btn-secondary dropdown-toggle"
+    data-controller="dropdown"
+    data-action="click-> dropdown#toggle"
+    aria-expanded="false">
+      Select a Project
+    </button>
+
+    <ul class="dropdown-menu">
+        <% projects.each do |project| %>
+            <li><%= link_to project.title,
+            project_path(project), class: "dropdown-item",onclick: "history.pushState({}, '', '#{project_path(project)}')", data: { turbo_frame:
+            "project_frame"} %> 
+        <% end %></li>
+      <li><%= link_to "New Project", new_project_path, class: "dropdown-item" %></li> 
+    </ul>
+  </div>
