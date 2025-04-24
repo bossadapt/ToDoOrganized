@@ -108,6 +108,7 @@ class ProjectEntriesController < ApplicationController
 
   # DELETE /project_entries/1 or /project_entries/1.json
   def destroy
+    @project_entry.comments.destroy_all
     @project_entry.actions.create(
       author_id: current_user.id,
       author_fullname: current_user.full_name,

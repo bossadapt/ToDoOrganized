@@ -3,7 +3,6 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :user_is_apart_of_project, only: [ :show ]
   # GET /comments or /comments.json
-  # TODO: remove routes for delte, updatae, edit
   def index
     @comments = Comment.find_by(commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
   end

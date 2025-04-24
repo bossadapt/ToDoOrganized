@@ -3,6 +3,8 @@ class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite ]
   before_action :user_is_apart_of_project, only: [ :show ]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+
   # GET /projects or /projects.json
   def index
     @projects = Project.joins(:users).where(users: { id: current_user.id })
@@ -24,9 +26,7 @@ class ProjectsController < ApplicationController
   end
   def user_is_owner
     @project = Project.find_by(id: params[:id], owner_id: current_user.id)
-    # TODO: Completed 500 Internal Server Error in 31ms (ActiveRecord: 3.5ms (3 queries, 0 cached) | GC: 1.1ms) for generating link
     if @project.nil?
-      Rails.debugger "debug as inteded 555666"
       flash.now[:notice] = "Only the owner can edit, delete or generate invites for the project"
       render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
     end
@@ -85,6 +85,10 @@ class ProjectsController < ApplicationController
 
   # DELETE /projects/1 or /projects/1.json
   def destroy
+    @project.project_entries.destroy_all
+    @project.comments.destroy_all
+    @project.actions.destroy_all
+    @project.project_invites.destroy_all
     @project.destroy!
 
     respond_to do |format|
@@ -95,7 +99,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1/generate-invite/
   def generate_invite
     code_generated = SecureRandom.uuid
-    Rails.debugger "tried to debug despite it should have failed 555666"
     invite = @project.project_invites.create(
       link_code: code_generated,
       expiration: DateTime.now + 1
@@ -120,22 +123,22 @@ class ProjectsController < ApplicationController
         @project.users << current_user
         @project.save
         redirect_to project_path(@project), notice: "Joined Project"
-        Rails.logger.info "Invite: #{project_invite.inspect} 312"
+      else
+        redirect_to project_path(@project), alert: "Already apart of project"
       end
-        redirect_to project_path(@project), alert: "Already Apart of this project"
-        Rails.logger.info "ALREADY IN 312"
     else
         redirect_to root_path, alert: "Invite expired or invalid"
-        Rails.logger.info "FAILED TO FIND 312"
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params.expect(:id))
+      @project = Project.find(params[:id])
     end
-
+    def handle_record_not_found
+      redirect_to projects_path, notice: "Project not found"
+    end
     # Only allow a list of trusted parameters through.
     def project_params
       params.expect(project: [ :title, :description ])

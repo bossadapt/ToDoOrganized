@@ -5,8 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :comments
   has_and_belongs_to_many :projects
-  belongs_to :owner, class_name: "User"
-  has_many :projects
+  has_many :owned_projects, class_name: "Project", foreign_key: "owner_id"
   def full_name
     "#{first_name} #{last_name}"
   end

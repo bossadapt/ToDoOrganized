@@ -1,5 +1,5 @@
 <h1>Projects</h1>
-<%= render "projects/projects_dropdown", projects:Project.where(owner_id: current_user.id) %>
+<%= render "projects/projects_dropdown", projects: current_user.projects %>
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
 <%= render "projects/users_dropdown", users: @project.users %>
@@ -7,7 +7,6 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: Handle rejections with alternative websocket stuff, like for project entities editing--->
     <!-- TODO: fix the after project button click, the users button no longer works --->
     <!-- TODO: actually add the footer --->
     <!-- TODO: Make projects and project entities deletable--->

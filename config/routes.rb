@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :comments
+  # Comments but remove routes for delte, updatae, edit
+  resources :comments, only: [ :index, :show, :create, :new ]
+
   resources :actions
   resources :project_entries
   resources :projects do
