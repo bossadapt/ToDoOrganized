@@ -1,11 +1,11 @@
-<h1>Action History</h1>
-<div id="actions" class="d-flex flex-column w-100">
-  <div class="d-flex flex-row">
-      <h3 class="w-20">Entry ID</h3>
-      <h3 class="w-20">Action Type</h3>
-      <h3 class="w-20">Author</h3>
-      <h3 class="w-20">Description</h3>
-      <h3 class="w-20">Time</h3>
+<h1 class="text-primary ms-5">Action History</h1>
+<div id="actions" class="d-flex flex-column w-75 mx-auto border border-dark">
+  <div class="bg-success d-flex flex-row">
+      <h3 class="w-20 text-primary border-start border-end m-0 text-center">Entry ID</h3>
+      <h3 class="w-20 text-primary border-start border-end m-0 text-center">Action Type</h3>
+      <h3 class="w-20 text-primary border-start border-end m-0 text-center">Author</h3>
+      <h3 class="w-20 text-primary border-start border-end m-0 text-center">Description</h3>
+      <h3 class="w-20 text-primary border-start border-end m-0 text-center">Time</h3>
   </div>
     <div id= "<%= parent + "actions_body"%>">
      <% for action in actions%>

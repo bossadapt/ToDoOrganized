@@ -1,14 +1,24 @@
-<div id="<%= dom_id action %>" class="d-flex flex-row w-100">
-          <h4 class="w-20">
+<% color = "bg-secondary" %>
+
+<% case action.action_type %>
+  <% when "Edit" %>
+    <% color = "bg-warning" %>
+  <% when "Delete" %>
+    <% color = "bg-danger" %>
+  <% when "Move" %>
+    <% color = "bg-primary" %>
+<% end %>
+<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>">
+          <h4 class="text-dark text-center w-20 border-start border-end m-0">
             <%if action.project_entry.nil?%>
               Project
             <%else %>
               <%=action.project_entry.id%>
             <%end %>
           </h4>
-          <h4 class="w-20"><%=action.action_type%></h4>
-          <h4 class="w-20"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h4>
-          <%=simple_format(action.description,class: "w-20")%>
-          <h3 class="w-20"><%= action.created_at.strftime("%H:%M %m/%d/%Y") %></h3>
+          <h4 class="text-dark text-center w-20 border-start border-end m-0"><%=action.action_type%></h4>
+          <h4 class="text-dark text-center w-20 border-start border-end m-0"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h4>
+          <%=simple_format(action.description,class: " border-start border-end text-center text-dark w-20 m-0")%>
+          <h3 class="text-dark text-center w-20 border-start border-end m-0"><%= action.created_at.strftime("%H:%M %m/%d/%Y") %></h3>
 </div>
 

@@ -1,19 +1,16 @@
-<div id="<%= dom_id comment %>">
-      <div>
-        <div>
-          <h3>
+<div id="<%= dom_id comment %>" class="display-flex bg-success rounded-2 flex-column w-75 mx-auto border border-dark my-2">
+        <div class="d-flex flex-row">
+          <h2 class="text-primary text-center w-50 mt-1">
             <%= comment.title %>
-          </h3>
-          <h3>
-            <%= comment.updated_at %>
+          </h2>
+          <h3 class="w-50 me-1 mt-1 text-end">
+            <%= comment.created_at.strftime("%H:%M %m/%d/%Y") %>
           </h3>
         </div>
-        <h3>
+        <h3 class="ms-1 text-secondary border-top border-bottom">
           <%= comment.author_fullname %>
         </h3>
-        <p>
+        <p class="mx-1" >
           <%= comment.body %>
         </p>
-    </div>
-
 </div>

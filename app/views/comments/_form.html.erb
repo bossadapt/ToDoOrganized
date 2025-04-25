@@ -17,17 +17,11 @@
         </ul>
       </div>
     <% end %>
-        <div>
-          <div>
-            <h3>
-              <%= form.text_field :title, data: { "comment-target": "title"}  %>
-            </h3>
-            <div>
-              <%= form.submit "Submit"%>
-            </div>
+        <div class="display-flex bg-success flex-column w-75 mx-auto border border-dark">
+          <div class ="d-flex flex-row">
+              <%= form.text_field :title,placeholder:"Title", class:"w-100" ,data: { "comment-target": "title"}  %>
+              <%= form.submit "Submit",class:"w-25" %>
           </div>
-          <p>
-            <%= form.text_field :body, data: { "comment-target": "body"}%>
-          </p>
+            <%= form.text_area :body,placeholder:"Description", class:"w-100", style:"height:100px" ,data: { "comment-target": "body"}%>
       </div>
         <% end %>

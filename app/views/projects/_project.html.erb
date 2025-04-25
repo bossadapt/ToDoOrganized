@@ -1,22 +1,24 @@
 <div id="<%= dom_id project %>">
   <%= turbo_frame_tag "project_edit" do %>
-  <div class="d-flex flex-row w-100">
-      <h1 class="w-50">
+  <div class="d-flex flex-row w-100 mx-5 my-2">
+      <h1 class="w-50 ">
         <%= link_to project.title, edit_project_path(@project) %> 
-      <h1>
-      <h6 class="w-40">
-        <%= project.description %>
-      </h6>
-      
-        <button class= "btn btn-primary" 
-        data-controller="clipboard"
-        data-action= "click->clipboard#generate" 
-        data-clipboard-url-value = "<%= generate_invite_project_path(@project)%>">
-          Generate Invite
-        </button>
-  
+      </h1>
+      <div class="w-50 d-flex flex-row">
+        <p>
+          <%= project.description %>
+        </p>
+        
+          <button class= "btn btn-primary" 
+          data-controller="clipboard"
+          data-action= "click->clipboard#generate" 
+          data-clipboard-url-value = "<%= generate_invite_project_path(@project)%>">
+            Generate Invite
+          </button>
+    
 
-      <%= button_to "Delete",  @project, method: :delete, class: "btn btn-secondary w-10 ml-auto mr-0px"%>
+        <%= button_to "Delete Project",  @project, method: :delete, class: "btn btn-danger h-100"%>
+      </div>
   </div>
   <% end %>
 </div>

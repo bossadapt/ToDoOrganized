@@ -1,18 +1,18 @@
 <% content_for :title, "Project entries" %>
-<div id="project_entries">
+<div id="project_entries" class="mx-5">
   <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">
+      <th class="w-20" scope="col">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProjectEntryModal">
   New Project Entry
 </button>
 
       </th>
-      <th scope="col">Assigned</th>
-      <th scope="col">Accepted</th>
-      <th scope="col">In Progress</th>
-      <th scope="col">Completed</th>
+      <th class="w-20" scope="col">Assigned</th>
+      <th class="w-20" scope="col">Accepted</th>
+      <th class="w-20" scope="col">In Progress</th>
+      <th class="w-20" scope="col">Completed</th>
     </tr>
   </thead>
   <%= render "project_entries/project_entries_table_body", project_entries: project_entries  %>

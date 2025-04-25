@@ -15,20 +15,19 @@
     <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>
+        <h1 class="text-primary ms-5"">Comments</h1>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
-        <div>Comments</div>
         <%= turbo_frame_tag "comments",  target:"_top" do%>
             <%= render @project.comments.ordered %>
         <% end %>
     </div>
     <div id="actions">
         <%= render "actions/actions", actions: @project.actions.ordered.limit(10) , parent:""%>
-        
   <%= button_to "Show All", 
       show_all_actions_project_path(@project),
       method: :get,
       remote: true,
       form: { data: { turbo_stream: true } },
-      class: "btn btn-sm btn-link mt-2" %>
+      class: "text-primary d-flex flex-column w-75 mx-auto border border-dark " %>
     </div>
 <% end %>
