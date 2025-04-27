@@ -18,7 +18,7 @@
         <
         <% end %>
     <% else %>
-        <button class="h-100" disabled><</button>
+        <button disabled><</button>
   <% end %>
      <div class="w-100" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value=<%= project_entry_path(project_entry) %>>
       <div class="d-flex flex-row">
@@ -52,6 +52,6 @@
       >
       <% end %>
     <% else %>
-  <button class="h-100 disabled" disabled>></button>
+  <button disabled>></button>
   <% end %>
 </div>

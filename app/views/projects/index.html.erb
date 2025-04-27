@@ -1,9 +1,10 @@
-<h1>Projects</h1>
+<h1 class="text-primary">Projects</h1>
 
 <div id="projects">
-  <%= render "projects/projects_dropdown", projects: @projects %>
-  <%= turbo_frame_tag "project_frame" do %>
-  <div id="current_project">
+  <% for project in current_user.projects %>
+  <div class="d-flex flex-row">
+    <%= link_to "GOTO" , project_path(project), class:"btn btn-primary my-auto"%>
+    <%= render "projects/project", project: project %>
   </div>
   <% end %>
 </div>

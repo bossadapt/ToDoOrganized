@@ -10,6 +10,11 @@ class ProjectEntriesController < ApplicationController
 
   # GET /project_entries/1 or /project_entries/1.json
   def show
+    respond_to do |format|
+      format.turbo_stream
+      format.html { render :show, status: :ok, location: @project_entry }
+      format.json { render :show, status: :ok, location: @project_entry }
+    end
   end
 
   # GET /project_entries/new

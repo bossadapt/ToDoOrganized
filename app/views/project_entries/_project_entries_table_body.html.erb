@@ -5,7 +5,7 @@
     @accepted_entries = []
     @in_progress_entries = []
     @completed_entries = []
-    for entry in project_entries
+    for entry in project_entries.ordered
       case entry.status
       when "new"
           @new_entries.push(entry)

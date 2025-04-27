@@ -1,33 +1,28 @@
+<h4 class="mb-0 w-75 text-primary">Title</h3>
     <p>
-      <strong>Title:</strong>
       <%= project_entry.title %>
     </p>
+    <h4 class="mb-0 w-75 text-primary">Assigned</h3>
     <p>
-      <strong>Assigned:</strong>
       <% if project_entry.assigned.present? %>
         <%= project_entry.assigned_fullname + "(" +project_entry.assigned.id.to_s + ")" %>
       <% else %>
           Not Assigned yet
       <% end %>
     </p>
+    <h4 class="mb-0 w-75 text-primary">Priority</h3>
     <p>
-      <strong>Priority:</strong>
       <%= project_entry.priority %>
     </p>
 
-    <p>
-      <strong>Description:</strong>
-      <%= project_entry.description %>
-    </p>
+    <h4 class="mb-0 w-75 text-primary">Description</h3>
 
     <p>
-      <strong>Status:</strong>
+      <%= project_entry.description %>
+    </p>
+<h4 class="mb-0 w-75 text-primary">Status</h3>
+    <p>
       <%= project_entry.status %>
     </p>
-    <%= link_to "Edit Entry", edit_project_entry_path(project_entry,project_id: project_entry.project.id), 
-    data: { turbo_frame:"project_entry_edit"} 
-    %>
-  <%= button_to 'Delete Entry', project_entry_path(project_entry), method: :delete, 
-  class: 'btn btn-danger', 
-  data: { controller: "project-entities", action: "click->project-entities#closeShowModal"
-  } %>
+    <div class="d-flex flex-row">
+  </div>

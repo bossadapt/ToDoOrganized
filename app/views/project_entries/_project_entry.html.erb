@@ -1,13 +1,23 @@
 <%= turbo_frame_tag "project_entry_frame", target: "_top" do%>
 <%= turbo_stream_from project_entry %>
 <div id="<%= dom_id project_entry %>">
-  <p>
-    <strong>Id:</strong>
-    <%= project_entry.id %>
-  </p>
+  <div class="d-flex flex-row">
+ <h4 class="mb-0 w-50 text-primary me-auto">Id</h3>
+     <%= link_to "Edit Entry", edit_project_entry_path(project_entry,project_id: project_entry.project.id), 
+    data: { turbo_frame:"project_entry_edit"}, 
+    class: "btn btn-primary"
+    %>
+  <%= button_to 'Delete Entry', project_entry_path(project_entry), method: :delete, 
+  class: 'btn btn-danger', 
+  data: { controller: "project-entities", action: "click->project-entities#closeShowModal"
+  } %>
+    </div>
 
   <p>
-    <strong>Author:</strong>
+    <%= project_entry.id %>
+  </p>
+<h4 class="mb-0 w-75 text-primary">Author Full Name</h3>
+  <p>
     <%= project_entry.author_fullname + "(" +project_entry.author.id.to_s + ")"%>
   </p>
   <%= turbo_frame_tag "project_entry_edit", target: "_top" do%>
@@ -18,7 +28,7 @@
   <div id="actions">
         <%= render "actions/actions", actions: project_entry.actions.ordered, parent: project_entry.id.to_s %>
     </div>
-    <h2>Comments</h2>
+    <h1 class="text-primary ms-5"">Comments</h1>
     <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>
     <%= turbo_frame_tag "comments",  target:"_top" do%>
       <%= render project_entry.comments.ordered %>

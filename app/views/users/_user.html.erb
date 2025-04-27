@@ -1,17 +1,30 @@
 <div id="<%= dom_id user %>">
+  <h3 class="text-primary  mb-0">Id</h3>
   <p>
-    <strong>Id:</strong>
     <%= user.id %>
   </p>
 
+<h3 class="text-primary  mb-0">First Name</h3>
   <p>
-    <strong>Name:</strong>
-    <%= user.first_name + " " + user.last_name %>
+    <%= user.first_name %>
   </p>
+  <h3 class="text-primary  mb-0">Last Name</h3>
+  <p>
+    <%= user.last_name %>
+  </p>
+    <h3 class="text-primary  mb-0">Email</h3>
 
   <p>
-    <strong>Email:</strong>
     <%= user.email %>
   </p>
+    <h3 class="text-primary  mb-0">Apart of Projects</h3>
+    <% 
+    project_list_string = ""
+    for project in current_user.projects 
+      project_list_string += project.title + "\n"
+    end
+    %>
+    <%= simple_format(project_list_string) %>
+
 
 </div>

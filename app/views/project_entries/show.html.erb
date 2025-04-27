@@ -1,10 +1,4 @@
 <p style="color: green"><%= notice %></p>
-
+<%= link_to "GOTO Parent Project", project_path(@project_entry.project_id), class: "btn btn-success text-primary w-100 mt-3 mb-3" %> 
 <%= render @project_entry %>
 
-<div>
-  <%= link_to "Edit this project entry", edit_project_entry_path(@project_entry) %> |
-  <%= link_to "Back to project entries", project_entries_path %>
-
-  <%= button_to "Destroy this project entry", @project_entry, method: :delete %>
-</div>

@@ -8,7 +8,7 @@
   <% when "Move" %>
     <% color = "bg-primary" %>
 <% end %>
-<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>">
+<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>" onclick="location.href='<%= action.project_entry.nil? ? project_path(action.project) : project_entry_path(action.project_entry) %>'">
           <h4 class="text-dark text-center w-20 border-start border-end m-0">
             <%if action.project_entry.nil?%>
               Project
@@ -18,7 +18,7 @@
           </h4>
           <h4 class="text-dark text-center w-20 border-start border-end m-0"><%=action.action_type%></h4>
           <h4 class="text-dark text-center w-20 border-start border-end m-0"><%=action.author_fullname+"("+action.author.id.to_s+")"%></h4>
-          <%=simple_format(action.description,class: " border-start border-end text-center text-dark w-20 m-0")%>
-          <h3 class="text-dark text-center w-20 border-start border-end m-0"><%= action.created_at.strftime("%H:%M %m/%d/%Y") %></h3>
+          <%=simple_format(action.description,class: " border-start border-end text-center text-dark w-20 m-0",style:"overflow-wrap: break-word;")%>
+          <h4 class="text-dark text-center w-20 border-start border-end m-0"><%= action.created_at.localtime.strftime("%H:%M %m/ %d/ %Y") %></h4>
 </div>
 

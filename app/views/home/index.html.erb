@@ -1,8 +1,24 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
-<% if user_signed_in?  %>
-<div>
-<%= current_user.first_name + current_user.last_name %>
+<div class="container h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+  <% if user_signed_in? %>
+    <!-- Content for logged-in users -->
+    <div class="text-center">
+      <h1 class="mb-4 text-primary">Welcome back, <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
+      <p class="lead">Time to be productive</p>
+       <%= link_to  "Get Back into the Projects", projects_path , class:"btn btn-secondary mb-5" %>
+       <%= render "actions/actions", actions: current_user.actions.ordered.limit(20) , parent:""%>
+
+    </div>
+  <% else %>
+    <!-- Content for visitors -->
+    <div class="text-center">
+      <h1 class="mb-4 text-primary">Welcome to ToDo Organized!</h1>
+      <p class="lead">Organize your tasks and projects effortlessly.</p>
+      <div class="d-flex flex-column">
+        <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-primary mt-3' %>
+        <%= link_to 'Log In', new_user_session_path, class: 'btn btn-secondary mt-3' %>
+        <button class="btn btn-success mt-3 mb-5" onclick="location.href='https://github.com/bossadapt/ToDoOrganized'" type="button">
+         Source</button>
+      </div>
+    </div>
+  <% end %>
 </div>
-<% end if%>
-<%= render 'home/about'%>

@@ -15,24 +15,26 @@
   <% end %>
   <%= form.hidden_field :project_id, value: project_entry.project.id %>
   <!-- User inputs-->
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title , data: { "project-entities-target": "title"} %>
-  </div>
+  <div class="text-primary justify-content-center align-items-center d-flex flex-column">
+    <div>
+      <h4 class="mb-0">Title</h3>
+      <%= form.text_field :title ,class:"mb-2", data: { "project-entities-target": "title"} %>
+    </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description , data: { "project-entities-target": "description"} %>
-  </div>
-  <div>
-    <%= form.label :priority, style: "display: block" %>
-    <%= form.number_field :priority , data: { "project-entities-target": "priority"} %>
-  </div>
-  <div>
-    <%= form.label :assigned, style: "display: block" %>
-    <%= form.collection_select :assigned_id, project_entry.project.users, :id, :full_name, { prompt: "Unassigned" }, { data: { "project-entities-target": "assigned" } } %>
-  </div>
-  <div>
-    <%= form.submit "Submit"%>
+    <div>
+      <h4 class="mb-0">Description</h3>
+      <%= form.text_area :description ,class:"mb-2", data: { "project-entities-target": "description"} %>
+    </div>
+    <div>
+      <h4 class="mb-0">Priority</h3>
+      <%= form.number_field :priority ,class:"mb-2", data: { "project-entities-target": "priority"} %>
+    </div>
+    <div>
+      <h4 class="mb-0">Assigned</h3>
+      <%= form.collection_select :assigned_id, project_entry.project.users, :id, :full_name, { prompt: "Unassigned" }, { data: { "project-entities-target": "assigned" } } %>
+    </div>
+    <div>
+      <%= form.submit "Submit", class:"btn btn-secondary"%>
+    </div>
   </div>
 <% end %>

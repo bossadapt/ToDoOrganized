@@ -1,17 +1,12 @@
-<h1>Projects</h1>
-<%= render "projects/projects_dropdown", projects: current_user.projects %>
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
-<%= render "projects/users_dropdown", users: @project.users %>
 <%= render @project %>
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: fix the after project button click, the users button no longer works --->
-    <!-- TODO: actually add the footer --->
-    <!-- TODO: Make projects and project entities deletable--->
-    <!-- TODO: Add user page to keep them updated -->
-    <!-- TODO: Clean CS for everything(login, landing page-->
+    <!-- TODO: fix css on user-->
+    <!-- TODO: fix css on projects screen-->
+    <!-- TODO: fix css on popups -->
     <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>

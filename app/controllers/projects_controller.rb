@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ show edit update destroy generate_invite use_invite]
+  before_action :set_project, only: %i[ show edit update destroy generate_invite use_invite leave_project]
   before_action :authenticate_user!
-  before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite ]
+  before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite, :project_kick ]
   before_action :user_is_apart_of_project, only: [ :show ]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
@@ -130,7 +130,23 @@ class ProjectsController < ApplicationController
         redirect_to root_path, alert: "Invite expired or invalid"
     end
   end
-
+  def leave_project
+    @project.users.delete(current_user)
+    @project.save
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to projects_path, notice: "Left project" }
+    end
+  end
+  def project_kick
+    @project.users.delete(params[:user_id])
+    @project.save
+    flash.now[:notice] = "Removed #{User.find(params[:user_id]).full_name} from project"
+    render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project

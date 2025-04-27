@@ -1,23 +1,32 @@
 <div id="<%= dom_id project %>">
   <%= turbo_frame_tag "project_edit" do %>
-  <div class="d-flex flex-row w-100 mx-5 my-2">
-      <h1 class="w-50 ">
-        <%= link_to project.title, edit_project_path(@project) %> 
+  <div class="d-flex flex-row mb-3"style="width:90%; margin-left:5%;margin-right:5%;">
+    <% if project.owner.id == current_user.id %>
+      <h1  style="width:30%">
+        <%= link_to project.title, edit_project_path(project), class:"my-auto" %> 
       </h1>
-      <div class="w-50 d-flex flex-row">
-        <p>
-          <%= project.description %>
+      <% else %>
+      <h1  class="text-primary my-auto" style="width:30%">
+        <%= project.title %>
+      </h1>
+    <% end %>
+      <div class="d-flex flex-row" style="width:70%">
+        <p class="text-primary" style="width:55%;margin-right:auto;">
+          <%= project.description%>
         </p>
-        
-          <button class= "btn btn-primary" 
+        <%= render "projects/users_dropdown", project: project %>
+
+        <% if project.owner.id == current_user.id %>
+          <button class= "btn btn-primary ms-2" 
           data-controller="clipboard"
           data-action= "click->clipboard#generate" 
-          data-clipboard-url-value = "<%= generate_invite_project_path(@project)%>">
+          data-clipboard-url-value = "<%= generate_invite_project_path(project)%>">
             Generate Invite
           </button>
-    
-
-        <%= button_to "Delete Project",  @project, method: :delete, class: "btn btn-danger h-100"%>
+          <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-danger ms-2 h-100"%>
+        <% else %>
+          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-danger ms-2 h-100"%>
+        <% end %>
       </div>
   </div>
   <% end %>

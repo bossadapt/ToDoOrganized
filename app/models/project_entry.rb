@@ -4,6 +4,7 @@ class ProjectEntry < ApplicationRecord
   belongs_to :project
   has_many :actions
   has_many :comments, as: :commentable
+  scope :ordered, -> { order(priority: :desc, created_at: :asc) }
 
   after_create_commit do
     broadcast_replace_to(
@@ -36,6 +37,6 @@ class ProjectEntry < ApplicationRecord
     )
   end
   def to_description
-    "Project Entry[Title: #{self.title} |Assigned: #{self.assigned}|Description: #{self.description}| Priority: #{self.priority}]"
+    "Project Entry:[\nTitle: #{self.title} \nAssigned: #{self.assigned} \nDescription: #{self.description} \nPriority: #{self.priority}\n]"
   end
 end

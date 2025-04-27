@@ -5,10 +5,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+      <div class="navbar-nav"> 
         <%if user_signed_in? %>
-        <%= link_to 'Home',user_path(current_user),class:"nav-link" %>
-        <%= link_to 'Projects',projects_path,class:"nav-link" %>
+        <%= render "projects/projects_dropdown", projects: current_user.projects %>
+        <%= link_to 'User',user_path(current_user),class:"nav-link" %>
         <%= button_to 'Log Out',destroy_user_session_path, method: :delete, class:"nav-link" %>
         <% elsif %>
         <%= link_to 'Log In',new_user_session_path,class:"nav-link" %>

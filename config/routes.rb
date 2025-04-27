@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :projects do
     member do
       get "generate-invite", to: "projects#generate_invite"
+      get "kick-from-project", to: "projects#project_kick"
+      get "remove-from-project", to: "projects#leave_project"
       get "use-invite/:invite_code", to: "projects#use_invite", as: :use_invite
       get "show_all_actions", to: "projects#show_all_actions", as: :show_all_actions
     end
