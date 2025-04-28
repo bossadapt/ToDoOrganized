@@ -4,17 +4,18 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: fix css on user-->
-    <!-- TODO: fix css on projects screen-->
-    <!-- TODO: fix css on popups -->
+    <!-- TODO: fix project edit-->
+    <!-- TODO: error handling, for creating and editing  project entry-->
+    <!-- TODO: need to update top project list on creation, deletion and renaming-->
+    <!-- TODO: set a limit on the priority of project entries-->
+    <!-- TODO: make it so other users project entries can claim it if its unassigned(open season)-->
+    <!-- TODO: fix css on mini project entries-->
     <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>
         <h1 class="text-primary ms-5"">Comments</h1>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
-        <%= turbo_frame_tag "comments",  target:"_top" do%>
-            <%= render @project.comments.ordered %>
-        <% end %>
+        <%= render partial:"comments/comments" , locals: {parent: "",comments: @project.comments.ordered} %>
     </div>
     <div id="actions">
         <%= render "actions/actions", actions: @project.actions.ordered.limit(10) , parent:""%>

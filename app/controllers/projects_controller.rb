@@ -66,6 +66,15 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
+    if @project.title == project_params[:title] && @project.description == project_params[:description]
+      render turbo_stream: turbo_stream.update(@project, partial: "projects/project", locals: { project: @project })
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to @project, notice: "No changes were made to the project" }
+        format.json { render :show, status: :ok, location: @project }
+        return
+      end
+    end
     respond_to do |format|
       if @project.update(project_params)
         @project.actions.create(
@@ -145,6 +154,7 @@ class ProjectsController < ApplicationController
     render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
     respond_to do |format|
       format.turbo_stream
+      format.html { redirect_to projects_path, notice: "Kick from project" }
     end
   end
   private

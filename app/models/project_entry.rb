@@ -4,6 +4,7 @@ class ProjectEntry < ApplicationRecord
   belongs_to :project
   has_many :actions
   has_many :comments, as: :commentable
+  validates :priority, numericality: { greater_than_or_equal_to: -2_147_483_648, less_than_or_equal_to: 2_147_483_647 }
   scope :ordered, -> { order(priority: :desc, created_at: :asc) }
 
   after_create_commit do

@@ -21,8 +21,7 @@
     <%= project_entry.author_fullname + "(" +project_entry.author.id.to_s + ")"%>
   </p>
   <%= turbo_frame_tag "project_entry_edit", target: "_top" do%>
-    <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
-  <% end %> 
+  <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
 </div>
 <div>
   <div id="actions">
@@ -30,8 +29,7 @@
     </div>
     <h1 class="text-primary ms-5"">Comments</h1>
     <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>
-    <%= turbo_frame_tag "comments",  target:"_top" do%>
-      <%= render project_entry.comments.ordered %>
+      <%= render partial:"comments/comments" , locals: {parent: project_entry.id.to_s,comments: project_entry.comments.ordered} %>
     <% end %>
     </div>
 <% end %>

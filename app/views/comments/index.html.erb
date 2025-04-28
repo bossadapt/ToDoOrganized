@@ -1,7 +1,7 @@
 
 <% content_for :title, "Comments" %>
 <%= turbo_frame_tag "comments" %>
-    <div id="comments" >
+    <div id=<%= parent + "_comments" %> >
       <% for comment in @commentable.comments do%>
         <%= render comment%>
     <%end%>

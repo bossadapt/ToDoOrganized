@@ -1,20 +1,24 @@
-<div id="<%= dom_id project %>">
-  <%= turbo_frame_tag "project_edit" do %>
-  <div class="d-flex flex-row mb-3"style="width:90%; margin-left:5%;margin-right:5%;">
-    <% if project.owner.id == current_user.id %>
-      <h1  style="width:30%">
-        <%= link_to project.title, edit_project_path(project), class:"my-auto" %> 
-      </h1>
-      <% else %>
-      <h1  class="text-primary my-auto" style="width:30%">
-        <%= project.title %>
-      </h1>
-    <% end %>
-      <div class="d-flex flex-row" style="width:70%">
-        <p class="text-primary" style="width:55%;margin-right:auto;">
+<div id="<%= dom_id project %>" class="d-flex flex-row mb-3"style="width:90vw; margin-left:5vw;margin-right:5vw;">
+
+      <%= turbo_frame_tag "project_edit",style:"width:65vw" do %>
+      <div class="d-flex flex-row">
+        <% if project.owner.id == current_user.id %>
+          <h1  style="width:25vw">
+            <%= link_to project.title, edit_project_path(project), class:"my-auto"%> 
+          </h1>
+          <% else %>
+          <h1  class="text-primary my-auto" style="width:25vw">
+            <%= project.title %>
+          </h1>
+          <% end %>
+        <p class="text-primary" style="width:40vw;margin-right:auto;">
           <%= project.description%>
         </p>
-        <%= render "projects/users_dropdown", project: project %>
+        </div>
+
+    <% end %>
+      <div class="d-flex flex-row" style="width:25vw">
+        <%= render "projects/users_dropdown", project: project%>
 
         <% if project.owner.id == current_user.id %>
           <button class= "btn btn-primary ms-2" 
@@ -23,11 +27,9 @@
           data-clipboard-url-value = "<%= generate_invite_project_path(project)%>">
             Generate Invite
           </button>
-          <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-danger ms-2 h-100"%>
+          <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-danger ms-2 h-100", data: { turbo: false }%>
         <% else %>
           <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-danger ms-2 h-100"%>
         <% end %>
       </div>
   </div>
-  <% end %>
-</div>

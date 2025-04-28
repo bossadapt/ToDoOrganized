@@ -1,12 +1,8 @@
   <%= turbo_frame_tag "project_edit" do %>
     <%= form_with(model: @project) do |form| %>
       <div class="d-flex flex-row w-100">
-          <div class="w-50">
-            <%= form.text_field :title %>
-          </div>
-          <div class="w-40">
-            <%= form.text_field :description %>
-          </div>
+            <%= form.text_field :title ,class:"my-auto", style:"font-size:2.5rem;width:25vw"%>
+            <%= form.text_area :description , style:"width:40vw;margin-right:auto;"%>
           <%= form.submit class: "btn btn-secondary w-10 ml-auto mr-0px"%>
       </div>
     <% end %>
