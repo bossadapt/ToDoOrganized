@@ -1,9 +1,9 @@
-  <%= turbo_frame_tag "project_edit" do %>
-    <%= form_with(model: @project) do |form| %>
+<%= turbo_frame_tag "project_edit" do %>
+    <%= form_with(model: @project, data: { controller: "project", action: "submit->project#correctProjectName", project_id_value: "#{@project.id}Dropdown" } ) do |form| %>
       <div class="d-flex flex-row w-100">
-            <%= form.text_field :title ,class:"my-auto", style:"font-size:2.5rem;width:25vw"%>
-            <%= form.text_area :description , style:"width:40vw;margin-right:auto;"%>
-          <%= form.submit class: "btn btn-secondary w-10 ml-auto mr-0px"%>
+          <%= form.text_field :title ,class:"my-auto", style:"font-size:2.5rem;width:25vw", data: { project_target: "title" }%>
+          <%= form.text_area :description , style:"width:40vw;margin-right:auto;"%>
+          <%= form.submit class: "btn btn-secondary w-10 ml-auto mr-0px" %>
       </div>
     <% end %>
   <% end %>

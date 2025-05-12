@@ -6,7 +6,7 @@
     </div>
     <!-- TODO: fix project edit-->
     <!-- TODO: error handling, for creating and editing  project entry-->
-    <!-- TODO: need to update top project list on creation, deletion and renaming-->
+    <!-- TODO: need to update top project list on creation and renaming-->
     <!-- TODO: set a limit on the priority of project entries-->
     <!-- TODO: make it so other users project entries can claim it if its unassigned(open season)-->
     <!-- TODO: fix css on mini project entries-->
@@ -17,13 +17,14 @@
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
         <%= render partial:"comments/comments" , locals: {parent: "",comments: @project.comments.ordered} %>
     </div>
-    <div id="actions">
-        <%= render "actions/actions", actions: @project.actions.ordered.limit(10) , parent:""%>
+    <h1 class="text-primary ms-5">Action History</h1>
+    <div id="actions", class="w-75 justify-content-center mx-auto">
+        <%= render "actions/actions", actions: @project.actions.ordered.limit(10) ,includeList: ["Entry ID","Action Type","Author", "Description","Time"], parent:""%>
   <%= button_to "Show All", 
       show_all_actions_project_path(@project),
       method: :get,
       remote: true,
       form: { data: { turbo_stream: true } },
-      class: "text-primary d-flex flex-column w-75 mx-auto border border-dark " %>
+      class: "text-primary d-flex w-100 flex-column mx-auto mb-5 border border-dark " %>
     </div>
 <% end %>

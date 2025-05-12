@@ -10,7 +10,7 @@
 
     <ul class="dropdown-menu">
         <% projects.each do |project| %>
-            <li><%= link_to project.title,
+            <li id= <%= project.id.to_s + "Dropdown"%>><%= link_to project.title,
             project_path(project), class: "dropdown-item",onclick: "history.pushState({}, '', '#{project_path(project)}')", data: { turbo_frame:
             "project_frame"} %> 
         <% end %></li>

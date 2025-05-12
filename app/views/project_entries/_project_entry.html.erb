@@ -24,8 +24,10 @@
   <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
 </div>
 <div>
+    <h1 class="text-primary ms-5">Action History</h1>
+
   <div id="actions">
-        <%= render "actions/actions", actions: project_entry.actions.ordered, parent: project_entry.id.to_s %>
+        <%= render "actions/actions", actions: project_entry.actions.ordered,includeList: ["Project","Action Type","Author", "Description","Time"],parent: project_entry.id.to_s %>
     </div>
     <h1 class="text-primary ms-5"">Comments</h1>
     <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>

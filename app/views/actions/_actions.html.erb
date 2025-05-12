@@ -1,15 +1,15 @@
-<h1 class="text-primary ms-5">Action History</h1>
-<div id="actions" class="d-flex flex-column w-75 mx-auto border border-dark">
+<div id="actions" class="d-flex flex-column mx-auto border border-dark">
   <div class="bg-success d-flex flex-row">
-      <h3 class="w-20 text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;" title="Entry ID">Entry ID</h3>
-      <h3 class="w-20 text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;" title="Action Type">Action Type</h3>
-      <h3 class="w-20 text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;" title="Author">Author</h3>
-      <h3 class="w-20 text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;" title="Description">Description</h3>
-      <h3 class="w-20 text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;" title="Time">Time</h3>
+    <% columnWidth = 100 / includeList.length() %>
+    <% columnWidthCss = "width:"+ columnWidth.to_s + "%;" %>
+    <% Rails.logger.debug "includelist in actions :"+includeList.nil?.to_s %>
+    <% for entry in includeList %>
+      <h3 class="text-primary border-start border-end m-0 text-center text-truncate" style="white-space: nowrap;<%=columnWidthCss %>" title="<%= entry %>"><%= entry %></h3>
+    <% end %>
   </div>
     <div id= "<%= parent + "actions_body"%>">
      <% for action in actions%>
-        <%= render action%>
+        <%= render action, includeList: includeList, columnWidthCss:columnWidthCss%>
     <% end %>
     </div>
 </div>
