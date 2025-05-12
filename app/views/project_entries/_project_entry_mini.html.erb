@@ -1,5 +1,5 @@
 <!-- have these call something that allows them display all the info, edit them, delete them --->
-<div class="d-flex flex-row bg-secondary" > 
+<div class="d-flex flex-row bg-dark" > 
   <% case project_entry.status %>
     <% when "assigned" %>
         <%= button_to project_entry_path(project_entry), class: "h-100" ,method: :patch, params: { project_entry: { status: "new" , assigned_id:  nil, assigned_fullname: nil} } do %>
@@ -20,16 +20,17 @@
     <% else %>
         <button disabled><</button>
   <% end %>
-     <div class="w-100" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value=<%= project_entry_path(project_entry) %>>
+     <div class="w-100 border border-primary border-start-0 border-end-0" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value=<%= project_entry_path(project_entry) %>>
       <div class="d-flex flex-row">
-        <h2>
+        <h2 class="text-primary ms-1">
             <%= project_entry.title %>
         </h2>
-        <h2 class="ms-auto text-end text-danger">
+        <h2 class="ms-auto me-1 text-end text-danger">
             <%= project_entry.priority %>
         </h2>
       </div>
-      <p>
+      <hr class="my-1" style="border: 3px solid var(--primary);">
+      <p class="mx-1">
         <%= project_entry.description %>
       </p> 
     </div>

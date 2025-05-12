@@ -28,9 +28,16 @@ class ProjectEntriesController < ApplicationController
     @project_entry = ProjectEntry.find(params[:id])
   end
   def user_is_edit_able
-    @project_entry = ProjectEntry.where(id: params[:id])
-    .where("author_id = :user_id OR assigned_id = :user_id", user_id: current_user.id)
-    .first
+    # Check if the user is the author
+    @project_entry = ProjectEntry.find_by(id: params[:id], author_id: current_user.id)
+    # Check if the user is assigned
+    if @project_entry.nil?
+      @project_entry = ProjectEntry.find_by(id: params[:id], assigned_id: current_user.id)
+    end
+    # Check if the project entry is open for grabs
+    if @project_entry.nil?
+      @project_entry = ProjectEntry.find_by(id: params[:id], assigned_id: nil)
+    end
     if @project_entry.nil?
       flash.now[:notice] = "Only Creator or Assigned can edit or delete this entry"
       render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
@@ -47,8 +54,7 @@ class ProjectEntriesController < ApplicationController
   def create
     @project_entry = ProjectEntry.new(project_entry_params)
     @project_entry.author = current_user
-    # Rails.logger.debug @project_id
-    # @project_entry.project = @project_id
+    Rails.logger.debug "creation happening 123321"
     @project_entry.author_fullname = current_user.full_name
     if @project_entry.assigned.present?
       @project_entry.status = "assigned"
@@ -57,8 +63,10 @@ class ProjectEntriesController < ApplicationController
     else
       @project_entry.status = "new"
     end
+    Rails.logger.debug @project_entry
     respond_to do |format|
       if @project_entry.save
+        Rails.logger.debug "creation happening 123321"
         @project_entry.actions.create(
           author_id: current_user.id,
           author_fullname: current_user.full_name,
@@ -69,8 +77,14 @@ class ProjectEntriesController < ApplicationController
         format.turbo_stream
         format.json { render :show, status: :created, location: @project_entry }
       else
-        format.turbo_stream
-        format.json { render json: @project_entry.errors, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "new_project_entry",
+            partial: "project_entries/form",
+            locals: { project_entry: @project_entry }
+          ), status: :bad_request
+        end
+        format.json { render json: @project_entry.errors, status: :bad_request }
       end
     end
   end
@@ -105,7 +119,13 @@ class ProjectEntriesController < ApplicationController
         format.turbo_stream
         format.json { render :show, status: :ok, location: @project_entry }
       else
-        format.turbo_stream
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "project_entry_update_form",
+            partial: "project_entries/form_edit",
+            locals: { project_entry: @project_entry }
+          ), status: :bad_request
+        end
         format.json { render json: @project_entry.errors, status: :unprocessable_entity }
       end
     end
