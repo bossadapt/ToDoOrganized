@@ -38,11 +38,18 @@ class ProjectsController < ApplicationController
   end
   def user_is_apart_of_project
     @project = Project.find(params[:id])
-    redirect_to projects_path, notice: "Not apart of project" if !@project.users.include?(current_user)
+    redirect_to projects_path, notice: "Not apart of project or no longer exists" if !@project.users.include?(current_user)
   end
   def show_all_actions
     @project = Project.find(params[:id])
     @actions = @project.actions.ordered
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+  def show_all_comments
+    @project = Project.find(params[:id])
+    @comments = @project.comments.ordered
     respond_to do |format|
       format.turbo_stream
     end
@@ -70,34 +77,41 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
-    if @project.title == project_params[:title] && @project.description == project_params[:description]
+    description = ""
+    if @project.title != project_params[:title]
+      description += "Title changed from #{@project.title} to #{project_params[:title]}\n"
+    end
+    if @project.description != project_params[:description]
+      description += "Desciption changed from #{@project.description} to #{project_params[:description]}\n"
+    end
+    if description == ""
       render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
       respond_to do |format|
         format.json { render :show, status: :ok, location: @project }
         return
       end
-    end
-    respond_to do |format|
-      if @project.update(project_params)
-        @project.actions.create(
-          author_id: current_user.id,
-          author_fullname: current_user.full_name,
-          action_type: "Edit",
-          description: @project.to_description
-        )
-        # unsure why this is needed even though there is a turbo frame setup but it is...
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
+    else
+      respond_to do |format|
+        if @project.update(project_params)
+          @project.actions.create(
+            author_id: current_user.id,
+            author_fullname: current_user.full_name,
+            action_type: "Edit",
+            description: description
+          )
+          # unsure why this is needed even though there is a turbo frame setup but it is...
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
+          end
+          format.html { redirect_to @project, notice: "Project was successfully updated." }
+          format.json { render :show, status: :ok, location: @project }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @project.errors, status: :unprocessable_entity }
         end
-        format.html { redirect_to @project, notice: "Project was successfully updated." }
-        format.json { render :show, status: :ok, location: @project }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
   end
-
   # DELETE /projects/1 or /projects/1.json
   def destroy
     @project.project_entries.destroy_all

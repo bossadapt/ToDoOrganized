@@ -7,10 +7,15 @@
             <%= comment.created_at.localtime.strftime("%H:%M %m/ %d/ %Y") %>
           </h3>
         </div>
-        <h3 class="ms-1 text-secondary border-top border-bottom">
-          <%= comment.author_fullname %>
+        <div class="d-flex flex-row ms-1 text-secondary border-top border-bottom">
+        <h3 class="w-50">
+          <%= "#{comment.author_fullname}"%>
         </h3>
-        <p class="mx-1" >
+        <h3 class="w-50 text-end">
+          <%= "#{comment.commentable.class} '#{comment.commentable.title}'" %>
+        </h3>
+        </div>
+        <p class="mx-2" style="font-size: 1.5rem;" >
           <%= comment.body %>
         </p>
 </div>

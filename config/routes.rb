@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get "remove-from-project", to: "projects#leave_project"
       get "use-invite/:invite_code", to: "projects#use_invite", as: :use_invite
       get "show_all_actions", to: "projects#show_all_actions", as: :show_all_actions
+      get "show_all_comments", to: "projects#show_all_comments", as: :show_all_comments
     end
   end
   devise_for :users

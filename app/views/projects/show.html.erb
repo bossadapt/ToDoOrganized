@@ -4,22 +4,27 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: error handling, for creating and editing  project entry-->
-    <!-- TODO: clean up descriptions for project actions-->
-    <!-- TODO: set a limit on the priority of project entries-->
-    <!-- TODO: fix css on mini project entries-->
+    <!-- TODO: add a load all comments button-->
     <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>
         <h1 class="text-primary ms-5"">Comments</h1>
         <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
-        <%= render partial:"comments/comments" , locals: {parent: "",comments: @project.comments.ordered} %>
+        <%= render partial:"comments/comments" , locals: {parent: "",comments: @project.comments.ordered.limit(10)} %>
+        <%= button_to "Show All", 
+            show_all_comments_project_path(@project),
+            id: "show_all_comments_button",
+            method: :get,
+            remote: true,
+            form: { data: { turbo_stream: true } },
+            class: "text-primary d-flex w-75 flex-column mx-auto mb-5 border border-dark " %>
     </div>
     <h1 class="text-primary ms-5">Action History</h1>
-    <div id="actions", class="w-75 justify-content-center mx-auto">
+    <div id="actions_container", class="w-75 justify-content-center mx-auto">
         <%= render "actions/actions", actions: @project.actions.ordered.limit(10) ,includeList: ["Entry ID","Action Type","Author", "Description","Time"], parent:""%>
   <%= button_to "Show All", 
       show_all_actions_project_path(@project),
+      id: "show_all_actions_button",
       method: :get,
       remote: true,
       form: { data: { turbo_stream: true } },
