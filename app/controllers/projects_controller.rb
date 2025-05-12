@@ -4,6 +4,7 @@ class ProjectsController < ApplicationController
   before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite, :project_kick ]
   before_action :user_is_apart_of_project, only: [ :show ]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+  include ActionView::RecordIdentifier
 
   # GET /projects or /projects.json
   def index
@@ -23,6 +24,10 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    respond_to do |format|
+      format.turbo_stream # For Turbo Frame requests
+      format.html # For full-page requests
+    end
   end
   def user_is_owner
     @project = Project.find_by(id: params[:id], owner_id: current_user.id)
@@ -66,10 +71,8 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
     if @project.title == project_params[:title] && @project.description == project_params[:description]
-      render turbo_stream: turbo_stream.update(@project, partial: "projects/project", locals: { project: @project })
+      render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
       respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to @project, notice: "No changes were made to the project" }
         format.json { render :show, status: :ok, location: @project }
         return
       end
@@ -82,6 +85,10 @@ class ProjectsController < ApplicationController
           action_type: "Edit",
           description: @project.to_description
         )
+        # unsure why this is needed even though there is a turbo frame setup but it is...
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
+        end
         format.html { redirect_to @project, notice: "Project was successfully updated." }
         format.json { render :show, status: :ok, location: @project }
       else

@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "project_edit" do %>
+<%= turbo_frame_tag dom_id(@project, :edit) do %>
     <%= form_with(model: @project, data: { controller: "project", action: "submit->project#correctProjectName", project_id_value: "#{@project.id}Dropdown" } ) do |form| %>
       <div class="d-flex flex-row w-100">
           <%= form.text_field :title ,class:"my-auto", style:"font-size:2.5rem;width:25vw", data: { project_target: "title" }%>

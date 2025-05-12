@@ -1,0 +1,17 @@
+              <%= turbo_frame_tag dom_id(project, :edit) do %>
+
+      <div class="d-flex flex-row" style="width:65vw">
+        <% if project.owner.id == current_user.id %>
+          <h1  style="width:25vw">
+            <%= link_to project.title, edit_project_path(project), class:"my-auto"%> 
+          </h1>
+          <% else %>
+          <h1  class="text-primary my-auto" style="width:25vw">
+            <%= project.title %>
+          </h1>
+          <% end %>
+        <p class="text-primary" style="width:40vw;margin-right:auto;">
+          <%= project.description%>
+        </p>
+        </div>
+        <% end %>

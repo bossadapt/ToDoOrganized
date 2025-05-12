@@ -1,25 +1,7 @@
 <div id="<%= dom_id project %>" class="d-flex flex-row mb-3"style="width:90vw; margin-left:5vw;margin-right:5vw;">
-
-      <%= turbo_frame_tag "project_edit",style:"width:65vw" do %>
-      <div class="d-flex flex-row">
-        <% if project.owner.id == current_user.id %>
-          <h1  style="width:25vw">
-            <%= link_to project.title, edit_project_path(project), class:"my-auto"%> 
-          </h1>
-          <% else %>
-          <h1  class="text-primary my-auto" style="width:25vw">
-            <%= project.title %>
-          </h1>
-          <% end %>
-        <p class="text-primary" style="width:40vw;margin-right:auto;">
-          <%= project.description%>
-        </p>
-        </div>
-
-    <% end %>
+      <%= render partial:"projects/project_editable", locals:{project:project} %>
       <div class="d-flex flex-row" style="width:25vw">
         <%= render "projects/users_dropdown", project: project%>
-
         <% if project.owner.id == current_user.id %>
           <button class= "btn btn-primary ms-2" 
           data-controller="clipboard"

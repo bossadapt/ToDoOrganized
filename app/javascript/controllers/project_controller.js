@@ -8,7 +8,6 @@ export default class extends Controller {
 
   correctProjectName(event) {
     // Log the domId value
-    console.log("domId:", this.domIdValue);
     const titleInput = this.titleTarget.value;
     const listEntry = document.getElementById(this.idValue);
     if (listEntry) {
