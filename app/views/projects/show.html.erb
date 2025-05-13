@@ -4,12 +4,11 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: add a load all comments button-->
     <!-- TODO: Check all endpoints are in use and are secure-->
 
     <div>
         <h1 class="text-primary ms-5"">Comments</h1>
-        <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
+        <%= turbo_frame_tag dom_id(Comment.new), src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>
         <%= render partial:"comments/comments" , locals: {parent: "",comments: @project.comments.ordered.limit(10)} %>
         <%= button_to "Show All", 
             show_all_comments_project_path(@project),

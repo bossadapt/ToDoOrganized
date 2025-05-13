@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy generate_invite use_invite leave_project]
   before_action :authenticate_user!
   before_action :user_is_owner, only: [ :edit, :update, :destroy, :generate_invite, :project_kick ]
-  before_action :user_is_apart_of_project, only: [ :show ]
+  before_action :user_is_apart_of_project, only: [ :show, :show_all_actions, :show_all_comments, :leave_project ]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
   include ActionView::RecordIdentifier
 

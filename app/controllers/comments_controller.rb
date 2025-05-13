@@ -1,10 +1,10 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ show ]
   before_action :authenticate_user!
-  before_action :user_is_apart_of_project, only: [ :show ]
+  before_action :user_is_apart_of_project, only: [ :show, :index ]
   # GET /comments or /comments.json
   def index
-    @comments = Comment.find_by(commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
+    @comments = Comment.where(author: current_user)
   end
 
   # GET /comments/1 or /comments/1.json
@@ -13,7 +13,16 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @comment = Comment.new(project_id: params[:project_id], commentable_id: params[:commentable_id], commentable_type: params[:commentable_type])
+    @comment = Comment.new(
+      project_id: params[:project_id],
+      commentable_id: params[:commentable_id],
+      commentable_type: params[:commentable_type]
+    )
+
+    respond_to do |format|
+      format.turbo_stream { render :new } # Ensure this renders the correct view
+      format.html # For full-page requests
+    end
   end
 
   def user_is_owner
@@ -22,7 +31,7 @@ class CommentsController < ApplicationController
   end
   def user_is_apart_of_project
     @comment = Comment.find_by(id: params[:id])
-    redirect_to projects_path, notice: "Not apart of project" if !comment.project.users.include?(current_user)
+    redirect_to projects_path, notice: "Not apart of project" if @comment.nil? || !@comment.project.users.include?(current_user)
   end
   # POST /comments or /comments.json
   def create

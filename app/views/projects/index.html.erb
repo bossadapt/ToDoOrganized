@@ -1,11 +1,13 @@
-<h1 class="text-primary">Projects</h1>
-
-<div id="projects" class="d-flex flex-column" >
-  <% for project in current_user.projects %>
-  <div class="d-flex flex-row min-width-100">
-    <%= link_to "GOTO" , project_path(project), class:"btn btn-primary my-auto me-3", data: { turbo_frame: "_top" }%>
-    <%= render "projects/project", project: project %>
+<div class="ms-2">
+  <h1 class="text-primary">Project Dashboard</h1>
+  <hr class="border border-primary border-2 opacity-50">
+  <div id="projects" class="d-flex flex-column" >
+    <% for project in current_user.projects %>
+    <div class="d-flex flex-row min-width-100">
+      <%= link_to "GOTO" , project_path(project), class:"btn btn-primary my-auto me-3", data: { turbo_frame: "_top" }%>
+      <%= render "projects/project", project: project %>
+    </div>
+    <% end %>
+      <%= link_to "Create a New Project", new_project_path, class:"btn btn-secondary mb-4", style:"width:98vw;margin-left:0.5vw;" %>
   </div>
-  <% end %>
-    <%= link_to "Create a New Project", new_project_path, class:"btn btn-secondary mb-4", style:"width:90vw;margin-left:5vw;margin-right:5v;" %>
 </div>

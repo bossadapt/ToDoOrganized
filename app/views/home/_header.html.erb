@@ -7,6 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav"> 
         <%if user_signed_in? %>
+        <%= link_to 'Project Dashboard',projects_path,class:"nav-link" %>
         <%= render "projects/projects_dropdown", projects: current_user.projects %>
         <%= link_to 'User',user_path(current_user),class:"nav-link" %>
         <%= button_to 'Log Out',destroy_user_session_path, method: :delete, class:"nav-link" %>

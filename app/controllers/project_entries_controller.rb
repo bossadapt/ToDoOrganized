@@ -2,7 +2,7 @@ class ProjectEntriesController < ApplicationController
   before_action :set_project_entry, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
   before_action :user_is_edit_able, only: [ :edit, :update, :destroy ]
-  before_action :user_is_apart_of_project, only: [ :show, :edit, :update, :destroy ]
+  before_action :user_is_apart_of_project, only: [ :show, :edit, :update, :destroy, :index ]
   # GET /project_entries or /project_entries.json
   def index
       @project_entries = ProjectEntry.where(user: current_user)

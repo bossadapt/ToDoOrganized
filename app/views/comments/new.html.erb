@@ -1,4 +1,4 @@
 <% content_for :title, "New comment" %>
-<%= turbo_frame_tag Comment.new,  target:"_top" do %>
-<%= render "form", comment: @comment %>
+<%= turbo_frame_tag dom_id(Comment.new),  target:"_top" do %>
+    <%= render "form", comment: @comment %>
 <% end %>
