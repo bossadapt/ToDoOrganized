@@ -20,8 +20,8 @@ class CommentsController < ApplicationController
     )
 
     respond_to do |format|
-      format.turbo_stream { render :new } # Ensure this renders the correct view
-      format.html # For full-page requests
+      format.turbo_stream { render :new }
+      format.html
     end
   end
 

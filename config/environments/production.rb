@@ -48,7 +48,13 @@ Rails.application.configure do
 
   # Replace the default in-process memory cache store with a durable alternative.
   config.cache_store = :solid_cache_store
+  # does nothing?
+  # config.relative_url_root = "/todoorganized"
 
+  # needed for css, js and turbo
+  config.assets.prefix = "/todoorganized/assets"
+  config.action_cable.url = "wss://bossadapt.org/todoorganized/cable"
+  config.action_cable.allowed_request_origins = [ "https://bossadapt.org" ]
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }

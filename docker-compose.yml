@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:15
+    env_file:
+      - production-secret.env
+    environment:
+      POSTGRES_USER: to_do_organized
+      POSTGRES_DB: to_do_organized_production
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    depends_on:
+      - db
+    env_file:
+      - production-secret.env
+    environment:
+      #Changes nothing
+      #RAILS_RELATIVE_URL_ROOT: /todoorganized
+      RAILS_ENV: production
+    ports:
+      - "127.0.0.1:5000:80"
+
+volumes:
+  pgdata:

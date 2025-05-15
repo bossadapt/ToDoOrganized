@@ -20,7 +20,7 @@
     <% else %>
         <button disabled><</button>
   <% end %>
-     <div class="w-100 border border-primary border-start-0 border-end-0" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value=<%= project_entry_path(project_entry) %>>
+     <div class="w-100 border border-primary border-start-0 border-end-0" style="height:150px" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value="<%= project_entry_path(project_entry) %>">
       <div class="d-flex flex-row">
         <h2 class="text-primary ms-1">
             <%= project_entry.title %>
@@ -30,7 +30,10 @@
         </h2>
       </div>
       <hr class="my-1" style="border: 3px solid var(--primary);">
-      <p class="mx-1">
+      <p class="mx-1" 
+      style="display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;overflow: hidden;">
         <%= project_entry.description %>
       </p> 
     </div>
