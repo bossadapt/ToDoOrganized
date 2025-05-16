@@ -63,6 +63,7 @@ class ProjectsController < ApplicationController
       if @project.save
         @project.actions.create(
           author_id: current_user.id,
+          targeting_project_entry: false,
           author_fullname: current_user.full_name,
           action_type: "Create",
           description: @project.to_description
@@ -74,7 +75,6 @@ class ProjectsController < ApplicationController
       end
     end
   end
-
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
     description = ""
@@ -95,6 +95,7 @@ class ProjectsController < ApplicationController
         if @project.update(project_params)
           @project.actions.create(
             author_id: current_user.id,
+            targeting_project_entry: false,
             author_fullname: current_user.full_name,
             action_type: "Edit",
             description: description

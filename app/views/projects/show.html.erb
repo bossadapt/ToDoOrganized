@@ -4,8 +4,6 @@
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
-    <!-- TODO: POST https://bossadapt.org/todoorganized/todoorganized/project_entries/5 | caused from moving the project entries back and forth-->
-
     <div>
         <h1 class="text-primary ms-5"">Comments</h1>
         <%= turbo_frame_tag dom_id(Comment.new), src: new_comment_path(project_id: @project.id, commentable_id: @project.id, commentable_type: "Project"), target:"_top" %>

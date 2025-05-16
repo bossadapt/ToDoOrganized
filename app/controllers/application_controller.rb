@@ -3,10 +3,6 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   allow_browser versions: :modern
   protected
-  # does nothing
-  # def default_url_options
-  #  { script_name: "/todoorganized" }
-  # end
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name ])
   end

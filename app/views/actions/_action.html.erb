@@ -9,18 +9,27 @@
     <% color = "bg-primary" %>
 <% end %>
     <% Rails.logger.debug "includelist in action :"+includeList.nil?.to_s %>
-
-<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>" onclick="location.href='<%= action.project_entry.nil? ? project_path(action.project) : project_entry_path(action.project_entry) %>'">
+<% link_to_action_target = "" %>
+<% entry_id_text = "" %>
+<% 
+  if !action.project_entry.nil?
+    entry_id_text = action.project_entry.id
+    link_to_action_target = project_entry_path(action.project_entry)
+  elsif action.targeting_project_entry
+     entry_id_text ="Deleted Entry" 
+     link_to_action_target = "javascript:void(0)"
+  else 
+    entry_id_text = ""
+    link_to_action_target = project_path(action.project)
+  end 
+%>
+<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>" onclick="location.href=' <%=link_to_action_target %>'">
           <% if includeList.include?("Project") %>
             <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.project.title%></h4>
           <% end %>
           <% if includeList.include?("Entry ID") %>
           <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>>
-            <%if action.project_entry.nil?%>
-              Project
-            <%else %>
-              <%=action.project_entry.id%>
-            <%end %>
+            <%= entry_id_text %>
           </h4>
           <% end %>
           <% if includeList.include?("Action Type") %>

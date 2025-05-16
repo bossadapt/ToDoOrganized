@@ -3,6 +3,7 @@ class ProjectEntriesController < ApplicationController
   before_action :authenticate_user!
   before_action :user_is_edit_able, only: [ :edit, :update, :destroy ]
   before_action :user_is_apart_of_project, only: [ :show, :edit, :update, :destroy, :index ]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
   # GET /project_entries or /project_entries.json
   def index
       @project_entries = ProjectEntry.where(user: current_user)
@@ -69,6 +70,7 @@ class ProjectEntriesController < ApplicationController
         Rails.logger.debug "creation happening 123321"
         @project_entry.actions.create(
           author_id: current_user.id,
+          targeting_project_entry: true,
           author_fullname: current_user.full_name,
           action_type: "Create",
           project_id: @project_entry.project.id,
@@ -112,6 +114,7 @@ class ProjectEntriesController < ApplicationController
         @project_entry.actions.create(
           author_id: current_user.id,
           author_fullname: current_user.full_name,
+          targeting_project_entry: true,
           action_type: @action_type,
           project_id: @project_entry.project.id,
           description: @descriptionOfChange
@@ -137,15 +140,29 @@ class ProjectEntriesController < ApplicationController
     @project_entry.actions.create(
       author_id: current_user.id,
       author_fullname: current_user.full_name,
+      targeting_project_entry: true,
       action_type: "Delete",
       project_id: @project_entry.project.id,
       description: @project_entry.to_description
     )
+    # possible refers
+    # http://127.0.0.1:3000/todoorganized/project_entries/4
+    # http://127.0.0.1:3000/todoorganized/projects/1
+    # if its originating from a popup of a project
     @project_entry.destroy!
-
-    respond_to do |format|
-      format.turbo_stream
-      format.json { head :no_content }
+    if request.referer.include?("/projects/")
+      respond_to do |format|
+        format.turbo_stream
+        format.json { head :no_content }
+      end
+    else
+      Rails.logger.debug "Redirecting to project path: #{project_path(@project_entry.project)}"
+      respond_to do |format|
+        format.turbo_stream do
+          redirect_to project_path(@project_entry.project), notice: "Project Entry was successfully destroyed."
+        end
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -189,7 +206,28 @@ class ProjectEntriesController < ApplicationController
     def set_project_entry
       @project_entry = ProjectEntry.find(params.expect(:id))
     end
-
+    # TODO: fix this its broken, im trying to handle something being deleted inside the popup and then accessed from the actions
+    def handle_record_not_found
+      if request.referer.include?("/projects/")
+        respond_to do |format|
+          format.turbo_stream do
+            flash.now[:notice] = "Project Entery never existed or no longer exists"
+            render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+          end
+          format.html do
+            flash.now[:notice] = "Project Entery never existed or no longer exists"
+            render :index
+          end
+          format.json do
+            Rails.logger.debug "Project Entry not found and not handled by the referer"
+            render json: { error: "Project Entry not found" }, status: :not_found
+          end
+        end
+      else
+        redirect_to projects_path, notice: "Project Entry never existed or no longer exists"
+      end
+      nil
+    end
     # Only allow a list of trusted parameters through.
     def project_entry_params
       params.expect(project_entry: [ :id, :assigned_id, :project_id, :title, :priority, :description, :status ])

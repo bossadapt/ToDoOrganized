@@ -24,6 +24,10 @@ class ProjectEntry < ApplicationRecord
     )
   end
   after_update_commit do
+    # Rails.logger.debug "[DEBUG_PATH] Turbo Stream Context: #{Rails.application.routes.url_helpers.default_url_options.inspect}"
+    Rails.logger.debug "[DEBUG_PATH] Broadcasting Turbo Stream for ProjectEntry #{id}"
+    Rails.logger.debug "[DEBUG_PATH] Generated Path: #{Rails.application.routes.url_helpers.project_entry_path(self)}"
+    Rails.logger.debug "[DEBUG_PATH] Generated Path with script_name: #{Rails.application.routes.url_helpers.project_entry_path(self, script_name: nil)}"
     broadcast_replace_to(
       project,
       target: "project_entries_tbody",
@@ -31,7 +35,7 @@ class ProjectEntry < ApplicationRecord
       locals: { project_entries: project.project_entries }
     )
     broadcast_replace_to(
-      project,
+      self,
       target: "project_entry_update_form",
       partial: "project_entries/project_entry_editable_fields",
       locals: { project_entry: self }

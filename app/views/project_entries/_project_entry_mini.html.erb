@@ -1,26 +1,25 @@
-<!-- have these call something that allows them display all the info, edit them, delete them --->
 <div class="d-flex flex-row bg-dark" > 
   <% case project_entry.status %>
     <% when "assigned" %>
-        <%= button_to project_entry_path(project_entry), class: "h-100" ,method: :patch, params: { project_entry: { status: "new" , assigned_id:  nil, assigned_fullname: nil} } do %>
+        <%= button_to project_entry_path(project_entry, script_name: nil), class: "h-100" ,method: :patch, params: { project_entry: { status: "new" , assigned_id:  nil, assigned_fullname: nil} } do %>
         <
         <% end %>
     <% when "accepted" %>
-        <%= button_to project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: { status: "assigned" } } do %>
+        <%= button_to project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: { status: "assigned" } } do %>
         <
         <% end %>
     <% when "in_progress" %>
-        <%= button_to  project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: { status: "accepted" } } do %>
+        <%= button_to  project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: { status: "accepted" } } do %>
         <
         <% end %>
     <% when "completed" %>
-        <%= button_to project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: { status: "in_progress" } } do %>
+        <%= button_to project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: { status: "in_progress" } } do %>
         <
         <% end %>
     <% else %>
         <button disabled><</button>
   <% end %>
-     <div class="w-100 border border-primary border-start-0 border-end-0" style="height:150px" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value="<%= project_entry_path(project_entry) %>">
+     <div class="w-100 border border-primary border-start-0 border-end-0" style="height:150px" role="button" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value="<%= project_entry_path(project_entry, script_name: nil) %>">
       <div class="d-flex flex-row">
         <h2 class="text-primary ms-1">
             <%= project_entry.title %>
@@ -40,19 +39,19 @@
 
   <% case project_entry.status %>
     <% when "new" %>
-      <%= button_to project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: { status: "assigned" }} do %>
+      <%= button_to project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: { status: "assigned" }} do %>
         >
       <% end %>
     <% when "assigned" %>
-      <%= button_to  project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: {  status: "accepted" } } do %>
+      <%= button_to  project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: {  status: "accepted" } } do %>
       >
       <% end %>    
     <% when "accepted" %>
-      <%= button_to  project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: {  status: "in_progress" } } do%>
+      <%= button_to  project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: {  status: "in_progress" } } do%>
       >
       <% end %>    
     <% when "in_progress" %>
-      <%= button_to  project_entry_path(project_entry), class: "h-100", method: :patch, params: { project_entry: {  status: "completed" } } do%>
+      <%= button_to  project_entry_path(project_entry, script_name: nil), class: "h-100", method: :patch, params: { project_entry: {  status: "completed" } } do%>
       >
       <% end %>
     <% else %>
