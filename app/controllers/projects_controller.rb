@@ -135,7 +135,7 @@ class ProjectsController < ApplicationController
       expiration: DateTime.now + 1
     )
     if invite.persisted?
-      link_generated =  "#{request.base_url}/projects/#{@project.id}/use-invite/#{code_generated}"
+      link_generated =  "#{request.base_url}/todoorganized/projects/#{@project.id}/use-invite/#{code_generated}"
       respond_to do |format|
         format.turbo_stream
         format.json { render json: { link: link_generated } }

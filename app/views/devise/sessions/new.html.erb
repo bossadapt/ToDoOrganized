@@ -1,5 +1,7 @@
-<% #TODO: handle unauthorized login %>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+   <% if flash[:alert] %>
+        <div class="alert alert-danger"><%= flash[:alert] %></div>
+      <% end %>
 <div class="d-flex flex-column justify-content-center align-items-center">
     <div class="d-flex flex-column w-25 h-25 mb-1 mt-2">
       <h3 class="text-primary mb-0">Email</h3>

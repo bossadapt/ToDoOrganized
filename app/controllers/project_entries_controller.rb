@@ -206,7 +206,6 @@ class ProjectEntriesController < ApplicationController
     def set_project_entry
       @project_entry = ProjectEntry.find(params.expect(:id))
     end
-    # TODO: fix this its broken, im trying to handle something being deleted inside the popup and then accessed from the actions
     def handle_record_not_found
         redirect_to projects_path, notice: "Project Entry never existed or no longer exists"
     end
