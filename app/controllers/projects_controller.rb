@@ -45,6 +45,7 @@ class ProjectsController < ApplicationController
     @actions = @project.actions.ordered
     respond_to do |format|
       format.turbo_stream
+      # format.html { render partial: "actions/actions", locals: { actions: @actions, parent: "", includeList: [ "Entry ID", "Action Type", "Author", "Description", "Time" ] } }
     end
   end
   def show_all_comments

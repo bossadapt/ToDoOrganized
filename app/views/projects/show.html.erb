@@ -19,12 +19,6 @@
     <h1 class="text-primary ms-5">Action History</h1>
     <div id="actions_container", class="w-75 justify-content-center mx-auto">
         <%= render "actions/actions", actions: @project.actions.ordered.limit(10) ,includeList: ["Entry ID","Action Type","Author", "Description","Time"], parent:""%>
-  <%= button_to "Show All", 
-      show_all_actions_project_path(@project),
-      id: "show_all_actions_button",
-      method: :get,
-      remote: true,
-      form: { data: { turbo_stream: true } },
-      class: "text-primary d-flex w-100 flex-column mx-auto mb-5 border border-dark " %>
+  <%= render partial:"actions/show_all_actions_button", locals: {project: @project} %>
     </div>
 <% end %>

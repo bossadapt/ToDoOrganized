@@ -2,5 +2,5 @@
   <%= render "actions/actions", actions: @actions, parent: "",includeList:[ "Entry ID", "Action Type", "Author", "Description", "Time" ]  %>
 <% end %>
 <%= turbo_stream.replace "show_all_actions_button" do %>
-  <div class="mb-5">
+  <div id="show_all_actions_button" class="mb-5">
 <% end %>

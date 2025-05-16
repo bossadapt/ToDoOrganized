@@ -15,6 +15,7 @@ class ProjectEntry < ApplicationRecord
       locals: { project_entries: project.project_entries }
     )
   end
+  # TODO: figure out why deletion of a project entry breaks the show all actions(does not show all actions)
   after_destroy_commit do
     broadcast_replace_to(
       project,

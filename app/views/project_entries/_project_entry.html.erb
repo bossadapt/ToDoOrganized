@@ -9,7 +9,7 @@
     %>
   <%= button_to 'Delete Entry', project_entry_path(project_entry), method: :delete, 
   class: 'btn btn-danger', 
-  data: { controller: "project-entities", action: "click->project-entities#closeShowModal"
+  data: { controller: "project-entities", action: "click->project-entities#handleDelete", "project-entities-peid-value": project_entry.id
   } %>
     </div>
 

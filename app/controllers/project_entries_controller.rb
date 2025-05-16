@@ -208,25 +208,7 @@ class ProjectEntriesController < ApplicationController
     end
     # TODO: fix this its broken, im trying to handle something being deleted inside the popup and then accessed from the actions
     def handle_record_not_found
-      if request.referer.include?("/projects/")
-        respond_to do |format|
-          format.turbo_stream do
-            flash.now[:notice] = "Project Entery never existed or no longer exists"
-            render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
-          end
-          format.html do
-            flash.now[:notice] = "Project Entery never existed or no longer exists"
-            render :index
-          end
-          format.json do
-            Rails.logger.debug "Project Entry not found and not handled by the referer"
-            render json: { error: "Project Entry not found" }, status: :not_found
-          end
-        end
-      else
         redirect_to projects_path, notice: "Project Entry never existed or no longer exists"
-      end
-      nil
     end
     # Only allow a list of trusted parameters through.
     def project_entry_params
