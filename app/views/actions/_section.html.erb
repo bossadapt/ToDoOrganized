@@ -1,0 +1,17 @@
+<div id="<%= "action_section_" + parent %>">
+    <div class="d-flex flex-row ms-5 mb-5">
+        <h1 class="text-primary">Action History</h1>
+        <%= link_to "Collapse", section_reset_action_path(parent: parent, actionable: actionable, includeList: includeList),
+        data: { turbo_stream: true },
+        class: "btn btn-primary ms-2"%>
+    </div>
+    <% if parent == "" 
+            actionable = Project.find(actionable)
+            project = actionable 
+        else
+            actionable = ProjectEntry.find(actionable)
+            project = actionable.project
+        end    %>
+    <%= render "actions/actions", actionable: actionable ,includeList: includeList, parent:parent%>
+    <%= render partial:"actions/show_all_actions_button", locals: {project: project} %>
+</div>

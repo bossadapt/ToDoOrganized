@@ -23,15 +23,8 @@
   <%= turbo_frame_tag "project_entry_edit", target: "_top" do%>
   <%= render partial: "project_entries/project_entry_editable_fields", locals: { project_entry: project_entry } %>
 </div>
-<div>
-    <h1 class="text-primary ms-5">Action History</h1>
+    <%= render partial:"comments/section_unexpanded", locals: {parent: project_entry.id.to_s, commentable: project_entry, commentableIsProject: false} %>    
 
-  <div id="actions">
-        <%= render "actions/actions", actions: project_entry.actions.ordered,includeList: ["Project","Action Type","Author", "Description","Time"],parent: project_entry.id.to_s %>
-    </div>
-    <h1 class="text-primary ms-5"">Comments</h1>
-    <%= turbo_frame_tag Comment.new, src: new_comment_path(project_id: project_entry.project.id, commentable_id: project_entry.id, commentable_type: "ProjectEntry"), target:"_top" %>
-      <%= render partial:"comments/comments" , locals: {parent: project_entry.id.to_s,comments: project_entry.comments.ordered} %>
-    <% end %>
-    </div>
+<%= render "actions/section_unexpanded", actionable: project_entry,includeList: ["Project","Action Type","Author", "Description","Time"],parent: project_entry.id.to_s %> 
+  <% end %>
 <% end %>

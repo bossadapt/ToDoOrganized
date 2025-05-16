@@ -8,7 +8,7 @@
     <% end %>
   </div>
     <div id= "<%= parent + "actions_body"%>">
-     <% for action in actions%>
+     <% for action in actionable.actions.ordered.limit(10) %>
         <%= render action, includeList: includeList, columnWidthCss:columnWidthCss%>
     <% end %>
     </div>

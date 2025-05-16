@@ -1,8 +1,18 @@
 Rails.application.routes.draw do
   # Comments but remove routes for delte, updatae, edit
   scope "/todoorganized" do
-    resources :comments, only: [ :index, :show, :create, :new ]
-    resources :actions, only: [ :show ]
+    resources :comments, only: [ :index, :show, :create, :new ] do
+      member do
+        get "section", to: "comments#section"
+        get "section_reset", to: "comments#section_reset"
+      end
+    end
+    resources :actions, only: [ :show ] do
+      member do
+        get "section", to: "actions#section"
+        get "section_reset", to: "actions#section_reset"
+      end
+    end
     resources :project_entries
     resources :projects do
       member do

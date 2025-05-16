@@ -64,14 +64,36 @@ class CommentsController < ApplicationController
     end
   end
 
+  def section
+    section_target = "comment_section_"+params[:parent].to_s
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(section_target, partial: "comments/section", locals: comment_section_params)
+        ]
+      end
+    end
+  end
 
+  def section_reset
+    section_target = "comment_section_"+params[:parent].to_s
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(section_target, partial: "comments/section_unexpanded", locals: comment_section_params)
+        ]
+      end
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params.expect(:id))
     end
-
-    # Only allow a list of trusted parameters through.
+    def comment_section_params
+      # Expects parent, commentable, isProject %>
+      params.slice(:parent, :commentable, :commentableIsProject)
+    end
     def comment_create_params
       params.expect(comment: [ :title, :body, :project_id, :commentable_id, :commentable_type ])
     end

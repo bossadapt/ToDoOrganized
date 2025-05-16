@@ -1,0 +1,8 @@
+<div id="<%= "action_section_"+parent %>">
+    <div class="d-flex flex-row ms-5 mb-5">
+        <h1 class="text-primary">Action History</h1>
+        <%= link_to "Expand", section_action_path(parent: parent, actionable: actionable, includeList: includeList),
+        data: { turbo_stream: true },
+        class: "btn btn-primary ms-2"%>
+    </div>
+</div>

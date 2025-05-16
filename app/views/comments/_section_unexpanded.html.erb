@@ -1,0 +1,8 @@
+<div id="<%= "comment_section_"+parent %>">
+    <div class="d-flex flex-row ms-5 mb-5">
+        <h1 class="text-primary">Comments</h1>
+        <%= link_to "Expand", section_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
+        data: { turbo_stream: true },
+        class: "btn btn-primary ms-2"%>
+    </div>
+</div>

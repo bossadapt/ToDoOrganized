@@ -13,7 +13,7 @@ class Comment < ApplicationRecord
     end
       broadcast_prepend_to(
         project,
-        target: "_comments",
+        target: "proj_comments",
         partial: "comments/comment",
         locals: { project_entries: project.project_entries }
       )

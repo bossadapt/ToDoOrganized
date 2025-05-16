@@ -1,0 +1,32 @@
+<% # Expects parent, commentable, isProject %>
+<% 
+    if commentableIsProject == true
+        project= Project.find(commentable)
+        commentable= project
+    else
+        commentable = ProjectEntry.find(commentable)
+        project = commentable.project
+    end
+%>
+<div id="<%= "comment_section_"+parent %>">
+    <div class="d-flex flex-row ms-5 mb-1">
+        <h1 class="text-primary">Comments</h1>
+        <%= link_to "Collapse",
+        section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
+        data: { turbo_stream: true },
+        class: "btn btn-primary ms-2"%>
+    </div>
+    <%= turbo_frame_tag dom_id(Comment.new), 
+    src: new_comment_path(project_id: project.id, 
+                        commentable_id: commentable.id, 
+                        commentable_type: "Project"), 
+                        target:"_top" %>
+    <%= render partial:"comments/comments" , locals: {parent: parent,comments: project.comments.ordered.limit(10)} %>
+    <%= button_to "Show All", 
+        show_all_comments_project_path(project),
+        id: "show_all_comments_button",
+        method: :get,
+        remote: true,
+        form: { data: { turbo_stream: true } },
+        class: "text-primary d-flex w-75 flex-column mx-auto mb-5 border border-dark " %>
+</div>

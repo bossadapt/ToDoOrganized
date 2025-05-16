@@ -1,7 +1,7 @@
 class ActionsController < ApplicationController
-  before_action :set_action, only: %i[ user_is_apart_of_project show edit update destroy ]
+  before_action :set_action, only: %i[ user_is_apart_of_project show]
   before_action :authenticate_user!
-  before_action :user_is_apart_of_project
+  before_action :user_is_apart_of_project, only: %i[show]
   # GET /actions or /actions.json
   def index
     @actions = Action.all
@@ -49,8 +49,33 @@ class ActionsController < ApplicationController
       end
     end
   end
+  # handling collpasability
+  def section
+    section_target = "action_section_"+params[:parent].to_s
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(section_target, partial: "actions/section", locals: action_section_params)
+        ]
+      end
+    end
+  end
 
+  def section_reset
+    section_target = "action_section_"+params[:parent].to_s
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(section_target, partial: "actions/section_unexpanded", locals: action_section_params)
+        ]
+      end
+    end
+  end
   private
+  def action_section_params
+    # Expects parent, commentable, isProject %>
+    params.slice(:parent, :actionable, :includeList)
+  end
     # Use callbacks to share common setup or constraints between actions.
     def set_action
       @action = Action.find(params.expect(:id))
