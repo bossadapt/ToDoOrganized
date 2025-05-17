@@ -119,7 +119,23 @@ class ProjectEntriesController < ApplicationController
           project_id: @project_entry.project.id,
           description: @descriptionOfChange
         )
-        format.turbo_stream
+        format.turbo_stream do
+          # TODO: needs to be done due to the need to maintain the priority order, but there has to be a way that does not force the users that are not even near that priority or on thiers only
+          # TODO: for now just figure out why its not acting on the turbo streams
+          if safe_params[:status].present? && safe_params[:status] != @project_entry.status
+            # if moved between columns, refresh both columns
+            # refresh old column
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+@project_entry.status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
+            # refresh new column
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+safe_params[:status], partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
+          elsif safe_params[:priority].present? && safe_params[:priority] != @project_entry.priority
+            # refresh current column
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+@project_entry.status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
+          else
+            # able to do a surgical edit
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entry_mini_"+@project_entry.id.to_s, partial: "project_entries/project_entry_mini", locals: { project_entry: @project_entry }
+          end
+        end
         format.json { render :show, status: :ok, location: @project_entry }
       else
         format.turbo_stream do

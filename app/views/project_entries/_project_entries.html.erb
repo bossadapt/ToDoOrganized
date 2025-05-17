@@ -1,23 +1,52 @@
 <% content_for :title, "Project entries" %>
-<div id="project_entries" class="mx-5">
-  <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th class="w-20" scope="col">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProjectEntryModal">
-  New Project Entry
-</button>
+<%# 125x5 height for body and 65 px for the header %>
+<%# TODO: add a min width for mobile users to overflow x scroll %>
+<div id="project_entries" class="d-flex flex-row mx-5 mb-3" style="height:725px;">
+  <div class="d-flex flex-column w-20 border border-secondary height:100%">
+    <div class="d-flex flex-row justify-content-center align-items-center bg-success p-2" style="height:65px;">
+      <button type="button" class="btn btn-dark rounded-0 ms-5 px-3 text-primary" style="font-size: 30px;height: 40px;line-height: 20px;" data-bs-toggle="modal" data-bs-target="#newProjectEntryModal">
+        +
+      </button>
+      <h2 class="text-primary ms-5 text-start w-75">
+        New
+      </h2>
+    </div>
+    <%= render partial: "project_entries/project_entries_column_body", locals: { project: @project, status:"new" } %>
+  </div>
+  <div class="d-flex flex-column w-20 border border-secondary height:100%">
+     <div class="d-flex flex-row justify-content-center align-items-center bg-success p-2" style="height:65px;">
+      <h2 class="text-primary">
+          Assigned
+        </h2>
+     </div>
+     <%= render partial: "project_entries/project_entries_column_body", locals: { project: @project, status:"assigned" } %>
+  </div>
+  <div class="d-flex flex-column w-20 border border-secondary height:100%">
+     <div class="d-flex flex-row justify-content-center align-items-center bg-success p-2" style="height:65px;">
+      <h2 class="text-primary">
+          Accepted
+        </h2>
+     </div>
+     <%= render partial: "project_entries/project_entries_column_body", locals: { project: @project, status:"accepted" } %>
+  </div>
 
-      </th>
-      <th class="w-20" scope="col">Assigned</th>
-      <th class="w-20" scope="col">Accepted</th>
-      <th class="w-20" scope="col">In Progress</th>
-      <th class="w-20" scope="col">Completed</th>
-    </tr>
-  </thead>
-  <%= render "project_entries/project_entries_table_body", project_entries: project_entries  %>
+  <div class="d-flex flex-column w-20 border border-secondary height:100%">
+     <div class="d-flex flex-row justify-content-center align-items-center bg-success p-2" style="height:65px;">
+      <h2 class="text-primary">
+          In Progress
+        </h2>
+     </div>
+     <%= render partial: "project_entries/project_entries_column_body", locals: { project: @project, status:"in_progress" } %>
+  </div>
 
-</table>
+  <div class="d-flex flex-column w-20 border border-secondary height:100%">
+     <div class="d-flex flex-row justify-content-center align-items-center bg-success p-2" style="height:65px;">
+      <h2 class="text-primary">
+          Completed
+        </h2>
+     </div>
+     <%= render partial: "project_entries/project_entries_column_body", locals: { project: @project, status:"completed" } %>
+  </div>
 </div>
 
 

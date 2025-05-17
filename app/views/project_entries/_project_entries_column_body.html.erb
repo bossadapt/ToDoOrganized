@@ -1,0 +1,15 @@
+<%# needs: project, status %>
+<div id ="<%= "project_entries_column_body_"+status %>">
+    <div class="mx-1">
+        <button class="text-center w-100">Previous</button>
+    </div>
+    <% entries = project.project_entries.ordered.where(status:status).limit(5) %>
+    <% entries.each do |project_entry| %>
+      <%= render partial: "project_entries/project_entry_mini", locals: { project_entry: project_entry } %>
+    <% end %>
+    <% if entries.length ==5 %>
+    <div class="mx-1">
+        <button class="text-center w-100">Next</button>
+    </div>
+    <% end %>
+</div>

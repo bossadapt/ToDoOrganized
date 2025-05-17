@@ -8,28 +8,26 @@ class ProjectEntry < ApplicationRecord
   scope :ordered, -> { order(priority: :desc, created_at: :asc) }
 
   after_create_commit do
+    # update either assigned or new based on status
     broadcast_replace_to(
       project,
-      target: "project_entries_tbody",
-      partial: "project_entries/project_entries_table_body",
-      locals: { project_entries: project.project_entries }
+      target: "project_entries_column_body_"+status,
+      partial: "project_entries/project_entries_column_body",
+      locals: { project: self.project, status: self.status }
     )
   end
   after_destroy_commit do
     broadcast_replace_to(
       project,
-      target: "project_entries_tbody",
-      partial: "project_entries/project_entries_table_body",
-      locals: { project_entries: project.project_entries }
+      target: "project_entries_column_body_"+status,
+      partial: "project_entries/project_entries_column_body",
+      locals: { project: self.project, status: self.status }
     )
   end
   after_update_commit do
-    broadcast_replace_to(
-      project,
-      target: "project_entries_tbody",
-      partial: "project_entries/project_entries_table_body",
-      locals: { project_entries: project.project_entries }
-    )
+    # TODO: make it so that editing assigned moves it to assigned
+    # TODO: if update does not include move then just update the
+
     broadcast_replace_to(
       self,
       target: "project_entry_update_form",
