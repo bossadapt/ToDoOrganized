@@ -36,7 +36,7 @@
             <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.action_type%></h4>
           <% end %>
           <% if includeList.include?("Author") %>
-            <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.author_fullname+"("+action.author.id.to_s+")"%></h4>
+            <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.author_fullname+" ("+action.author.id.to_s+")"%></h4>
           <% end %>
           <% if includeList.include?("Description") %>
             <%=simple_format(action.description,class: " border-start border-end text-center text-dark  m-0",style:"overflow-wrap: break-word;"+ columnWidthCss)%>

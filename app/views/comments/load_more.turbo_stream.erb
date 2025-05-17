@@ -1,0 +1,24 @@
+<%# parent: parent, commentable: commentable, includeList: includeList, oldestcommentId: comments.last.id %>
+<%  #append the items %>
+<% @commentable = @parent=="proj" ? Project.find(@commentable) : ProjectEntry.find(@commentable) %>
+<% oldestcomment = Comment.find(@oldest_comment_id) %>
+<% comments = @commentable.comments.ordered.where("created_at < ?", oldestcomment.created_at).limit(5) %>
+<% if comments.length < 5 %>
+    <%= turbo_stream.replace "load_more_comments_" + @parent do%>
+            <div></div>
+    <% end %>
+<% else %>
+    <%= turbo_stream.replace "load_more_comments_" + @parent do%>
+        <%= link_to "Load More", load_more_comment_path(parent: @parent, commentable: @commentable, includeList: @include_list, oldestCommentId: comments.last.id),
+        id: "load_more_comments_" + @parent, 
+        data: { turbo_stream: true }, 
+        class: "btn btn-primary ms-2 mt-2 mb-3 w-100"%>
+    <% end %>
+<% end %>
+<% unless comments.empty? %>
+    <%= turbo_stream.append @parent + "_comments" do%>
+        <% comments.each do |comment| %>
+                <%= render comment%>
+        <%end %>
+    <% end %>
+<% end %>

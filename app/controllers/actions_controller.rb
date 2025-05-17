@@ -71,7 +71,21 @@ class ActionsController < ApplicationController
       end
     end
   end
+  # handle weak pagination
+  def load_more
+    @parent = params[:parent]
+    @actionable = params[:actionable]
+    @include_list = params[:includeList]
+    @oldest_action_id = params[:oldestActionId]
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   private
+  def load_more_params
+    params.slice(:parent, :actionable, :includeList, :oldestActionId)
+  end
   def action_section_params
     # Expects parent, commentable, isProject %>
     params.slice(:parent, :actionable, :includeList)

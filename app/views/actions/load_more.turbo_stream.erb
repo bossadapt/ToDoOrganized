@@ -1,0 +1,36 @@
+<%# parent: parent, actionable: actionable, includeList: includeList, oldestActionId: actions.last.id %>
+<%  #append the items %>
+<% 
+    case @parent
+    when ""
+        @actionable = Project.find(@actionable)
+    when "user"
+        @actionable = User.find(@actionable)
+    else
+        @actionable = ProjectEntry.find(@actionable)
+    end
+%>
+<% oldestAction = Action.find(@oldest_action_id) %>
+<% actions = @actionable.actions.ordered.where("created_at < ?", oldestAction.created_at).limit(5) %>
+
+<% if actions.length < 5 %>
+    <%= turbo_stream.replace "load_more_actions_" + @parent do%>
+            <div></div>
+    <% end %>
+<% else %>
+    <%= turbo_stream.replace "load_more_actions_" + @parent do%>
+            <%= link_to "Load More", load_more_actions_path(parent: @parent, actionable: @actionable, includeList: @include_list, oldestActionId: actions.last.id),
+            id: "load_more_actions_" + @parent, 
+            data: { turbo_stream: true }, 
+            class: "btn btn-primary ms-2 mt-2 mb-3 w-100"%>
+    <% end %>
+<% end %>
+<% unless actions.empty? %>
+    <%= turbo_stream.append @parent + "actions_body" do%>
+        <% columnWidth = 100 / @include_list.length() %>
+        <% columnWidthCss = "width:"+ columnWidth.to_s + "%;" %>
+        <% actions.each do |action| %>
+                <%= render action, includeList: @include_list, columnWidthCss:columnWidthCss%>
+        <%end %>
+    <% end %>
+<% end %>

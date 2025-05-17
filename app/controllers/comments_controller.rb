@@ -85,8 +85,20 @@ class CommentsController < ApplicationController
       end
     end
   end
+
+  def load_more
+    @parent = params[:parent]
+    @commentable = params[:commentable]
+    @oldest_comment_id = params[:oldestCommentId]
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
+    def load_more_params
+      params.slice(:parent, :commentable, :oldestCommentId)
+    end
     def set_comment
       @comment = Comment.find(params.expect(:id))
     end

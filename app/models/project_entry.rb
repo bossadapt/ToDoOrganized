@@ -15,7 +15,6 @@ class ProjectEntry < ApplicationRecord
       locals: { project_entries: project.project_entries }
     )
   end
-  # TODO: figure out why deletion of a project entry breaks the show all actions(does not show all actions)(sometimes even breaks the websocket update)
   after_destroy_commit do
     broadcast_replace_to(
       project,
@@ -25,10 +24,6 @@ class ProjectEntry < ApplicationRecord
     )
   end
   after_update_commit do
-    # Rails.logger.debug "[DEBUG_PATH] Turbo Stream Context: #{Rails.application.routes.url_helpers.default_url_options.inspect}"
-    Rails.logger.debug "[DEBUG_PATH] Broadcasting Turbo Stream for ProjectEntry #{id}"
-    Rails.logger.debug "[DEBUG_PATH] Generated Path: #{Rails.application.routes.url_helpers.project_entry_path(self)}"
-    Rails.logger.debug "[DEBUG_PATH] Generated Path with script_name: #{Rails.application.routes.url_helpers.project_entry_path(self, script_name: nil)}"
     broadcast_replace_to(
       project,
       target: "project_entries_tbody",

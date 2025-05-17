@@ -5,7 +5,7 @@
       <h1 class="mb-4 text-primary">Welcome back, <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
       <p class="lead">Time to be productive</p>
        <%= link_to  "Get Back into the Projects", projects_path , class:"btn btn-secondary mb-5" %>
-       <%= render "actions/actions", actionable: current_user, includeList: ["Project","Entry ID","Action Type", "Description","Time"] , parent:""%>
+    <%= render "actions/section_unexpanded", actionable: current_user.id, includeList: ["Project","Entry ID","Action Type", "Description","Time"],parent: "user" %> 
 
     </div>
   <% else %>

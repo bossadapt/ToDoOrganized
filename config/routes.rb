@@ -5,12 +5,14 @@ Rails.application.routes.draw do
       member do
         get "section", to: "comments#section"
         get "section_reset", to: "comments#section_reset"
+        get "load_more", to: "comments#load_more"
       end
     end
     resources :actions, only: [ :show ] do
-      member do
+      collection do
         get "section", to: "actions#section"
         get "section_reset", to: "actions#section_reset"
+        get "load_more", to: "actions#load_more"
       end
     end
     resources :project_entries
@@ -20,8 +22,6 @@ Rails.application.routes.draw do
         get "kick-from-project", to: "projects#project_kick"
         get "remove-from-project", to: "projects#leave_project"
         get "use-invite/:invite_code", to: "projects#use_invite", as: :use_invite
-        get "show_all_actions", to: "projects#show_all_actions", as: :show_all_actions
-        get "show_all_comments", to: "projects#show_all_comments", as: :show_all_comments
       end
     end
     devise_for :users
