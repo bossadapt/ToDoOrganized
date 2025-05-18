@@ -1,11 +1,16 @@
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
 <%= render @project %>
+    <hr class="border border-primary mx-4">
     <div id= "entries"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
+    <hr class="border border-primary mx-4">
 
     <%= render partial:"comments/section_unexpanded", locals: {parent: "proj", commentable: @project, commentableIsProject: true} %>
+        <hr class="border border-primary mx-4">
+
     <%= render "actions/section_unexpanded", actionable: @project,includeList: ["Entry ID","Action Type","Author", "Description","Time"],parent: "" %> 
+    <hr class="border border-primary mx-4">
 
 <% end %>

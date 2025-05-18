@@ -108,7 +108,8 @@ class ProjectEntriesController < ApplicationController
       handle_assigned_change(safe_params)
     end
     return if @descriptionOfChange.blank?
-
+    old_status = @project_entry.status
+    old_priority = @project_entry.priority.to_s
     respond_to do |format|
       if @project_entry.update(safe_params)
         @project_entry.actions.create(
@@ -120,17 +121,16 @@ class ProjectEntriesController < ApplicationController
           description: @descriptionOfChange
         )
         format.turbo_stream do
-          # TODO: needs to be done due to the need to maintain the priority order, but there has to be a way that does not force the users that are not even near that priority or on thiers only
-          # TODO: for now just figure out why its not acting on the turbo streams
-          if safe_params[:status].present? && safe_params[:status] != @project_entry.status
+          # TODO: but there has to be a way that does not force the users that are not even near that priority or on thiers only
+          if safe_params[:status].present? && safe_params[:status] != old_status
             # if moved between columns, refresh both columns
             # refresh old column
-            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+@project_entry.status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+old_status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: old_status }
             # refresh new column
-            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+safe_params[:status], partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
-          elsif safe_params[:priority].present? && safe_params[:priority] != @project_entry.priority
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+safe_params[:status], partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: @project_entry.status }
+          elsif safe_params[:priority].present? && safe_params[:priority] != old_priority
             # refresh current column
-            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+@project_entry.status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: self.status }
+            Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entries_column_body_"+@project_entry.status, partial: "project_entries/project_entries_column_body", locals: { project: @project_entry.project, status: @project_entry.status }
           else
             # able to do a surgical edit
             Turbo::StreamsChannel.broadcast_replace_to @project_entry.project, target: "project_entry_mini_"+@project_entry.id.to_s, partial: "project_entries/project_entry_mini", locals: { project_entry: @project_entry }
@@ -181,7 +181,17 @@ class ProjectEntriesController < ApplicationController
       end
     end
   end
-
+  def change_page
+    # project_id: project.id, status:status, focused_entry: entries.last.id,direction:"prev"
+    # all being passed to change_page.turbo_stream.erb
+    @project_id = params[:project_id]
+    @status = params[:status]
+    @focused_entry = params[:focused_entry]
+    @direction = params[:direction]
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
   private
   def handle_move_change(safe_params)
     @action_type = "Move"
@@ -218,6 +228,7 @@ class ProjectEntriesController < ApplicationController
     new_str = "#{new_name}(#{safe_params[:assigned_id] || ''})"
     @descriptionOfChange += "Assigned: #{old_str} to #{new_str}\n"
   end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_project_entry
       @project_entry = ProjectEntry.find(params.expect(:id))

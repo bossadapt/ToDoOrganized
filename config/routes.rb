@@ -15,7 +15,11 @@ Rails.application.routes.draw do
         get "load_more", to: "actions#load_more"
       end
     end
-    resources :project_entries
+    resources :project_entries do
+      collection do
+        get "change_page", to: "project_entries#change_page"
+      end
+    end
     resources :projects do
       member do
         get "generate-invite", to: "projects#generate_invite"

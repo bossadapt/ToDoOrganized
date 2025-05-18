@@ -1,15 +1,19 @@
 <%# needs: project, status %>
 <div id ="<%= "project_entries_column_body_"+status %>">
-    <div class="mx-1">
-        <button class="text-center w-100">Previous</button>
+    <div class="mx-1 my-1">
+        <button class="btn btn-outline-primary w-100 rounded-0" disabled>Previous</button>
     </div>
-    <% entries = project.project_entries.ordered.where(status:status).limit(5) %>
-    <% entries.each do |project_entry| %>
-      <%= render partial: "project_entries/project_entry_mini", locals: { project_entry: project_entry } %>
+    <% entries = project.project_entries.ordered.where(status:status).limit(6) %>
+    <%  corrected_length = entries.length < 5 ? entries.length : 5%>
+    <% (0...corrected_length).each do |index| %>
+        <%= render partial: "project_entries/project_entry_mini", locals: { project_entry: entries[index] } %>
     <% end %>
-    <% if entries.length ==5 %>
-    <div class="mx-1">
-        <button class="text-center w-100">Next</button>
-    </div>
-    <% end %>
+        <% if entries.length ==6 %>
+            <div class="mx-1">
+                <%= link_to "Next", change_page_project_entries_path(project_id: project.id, status:status, focused_entry: entries[4],direction:"next"),
+                id: "load_next_entries_" + status, 
+                data: { turbo_stream: true }, 
+                class: "btn btn-outline-primary w-100 rounded-0"%>
+            </div>
+        <% end %>
 </div>

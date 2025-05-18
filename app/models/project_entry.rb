@@ -5,7 +5,9 @@ class ProjectEntry < ApplicationRecord
   has_many :actions
   has_many :comments, as: :commentable
   validates :priority, numericality: { greater_than_or_equal_to: -2_147_483_648, less_than_or_equal_to: 2_147_483_647 }
-  scope :ordered, -> { order(priority: :desc, created_at: :asc) }
+  # if changed make sure to fix change_page to prioritize the right order for pagination aaaaaaaalso project entry turbo stream updates
+  scope :ordered, -> { order(priority: :desc, id: :asc) }
+  scope :rev_ordered, -> { order(priority: :asc, id: :desc) }
 
   after_create_commit do
     # update either assigned or new based on status
