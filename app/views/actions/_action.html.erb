@@ -23,7 +23,7 @@
     link_to_action_target = project_path(action.project)
   end 
 %>
-<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border border-dark m-0" %>" onclick="location.href=' <%=link_to_action_target %>'">
+<div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border-bottom border-dark m-0" %>" onclick="location.href=' <%=link_to_action_target %>'">
           <% if includeList.include?("Project") %>
             <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.project.title%></h4>
           <% end %>

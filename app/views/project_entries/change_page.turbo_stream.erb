@@ -1,33 +1,24 @@
-<%# params.slice(:project_id, :status, :oldest_entry_id)%>
+<%# project_id, status, page_size, page
 <%  #append the items %>
 <% Rails.logger.debug "quering project" %>
 <% @project = Project.find(@project_id) %>
-<% Rails.logger.debug "quering initial entry" %>
-<% focused_entry = ProjectEntry.find(@focused_entry) %>
 <% Rails.logger.debug "quering entries" %>
 <% 
-    first_entry = ""
-    last_entry = ""
-    entries = [] 
-    corrected_length = 0
-
-    if @direction == "next"
-        entries = @project.project_entries.ordered.where("status = ? AND priority <= ? AND id > ?", focused_entry.status,focused_entry.priority, focused_entry.id,).limit(6)
-        corrected_length = entries.length < 5 ? entries.length : 5
-        first_entry = entries[0]
-        last_entry = entries[corrected_length-1]
-    else
-        entries = @project.project_entries.rev_ordered.where("status = ? AND priority >= ? AND id < ?", focused_entry.status,focused_entry.priority, focused_entry.id).limit(6)
-        corrected_length = entries.length < 5 ? entries.length : 5
-        first_entry = entries[corrected_length-1]
-        last_entry = entries[0]
-   end
+    @page = Integer(@page)
+    @page_size = Integer(@page_size)
+    offset = @page * @page_size
+    entries = @project
+                .project_entries
+                .ordered
+                .where(status:@status)
+                .offset(offset)
+                .limit(@page_size+1)
 %>
 <%= turbo_stream.replace "project_entries_column_body_" + @status do%>
     <div id ="<%= "project_entries_column_body_"+@status %>">
-        <% if @direction == "next" || entries.length ==6 %>
+        <% if @page != 0 %>
             <div class="mx-1  my-1">
-                <%= link_to "Previous", change_page_project_entries_path(project_id: @project.id,  status:@status, focused_entry: first_entry,direction:"prev"),
+                <%= link_to "Previous", change_page_project_entries_path(project_id: @project.id,  status:@status, page_size:@page_size, page:@page-1),
                 data: { turbo_stream: true }, 
                 class: "btn btn-outline-primary w-100 rounded-0"%>
             </div>
@@ -36,27 +27,13 @@
                 <button class="btn btn-outline-primary w-100 rounded-0" disabled>Previous</button>
             </div>
         <% end %>
-        <% if @direction == "next" %>
-            <% Rails.logger.debug "going forwards" %>
-            <% Rails.logger.debug "len:"+entries.length.to_s %>
-            <% Rails.logger.debug "corrected len:"+corrected_length.to_s %>
+            <% corrected_length = entries.length == @page_size + 1 ? @page_size :entries.length %>
             <% (0...corrected_length).each do |index| %>
-            <% Rails.logger.debug "trying forward #{index}" %>
                 <%= render partial: "project_entries/project_entry_mini", locals: { project_entry: entries[index] } %>
             <% end %>
-        <% else %>
-            <% Rails.logger.debug "going backwards" %>
-            <% Rails.logger.debug "len:"+entries.length.to_s %>
-            <% Rails.logger.debug "corrected len:"+corrected_length.to_s %>
-
-            <% (corrected_length-1).downto(0).each do |index| %>
-            <% Rails.logger.debug "trying backwards #{index}" %>
-                <%= render partial: "project_entries/project_entry_mini", locals: { project_entry: entries[index] } %>
-            <% end %>
-        <% end %>
-        <% if @direction == "prev" || entries.length ==6 %>
+        <% if entries.length == @page_size+1 %>
             <div class="mx-1">
-                <%= link_to "Next", change_page_project_entries_path(project_id: @project.id, status:@status, focused_entry: last_entry,direction:"next"),
+                <%= link_to "Next", change_page_project_entries_path(project_id: @project.id, status:@status, page_size:@page_size, page:@page+1),
                 data: { turbo_stream: true }, 
                 class: "btn btn-outline-primary w-100 rounded-0"%>
             </div>

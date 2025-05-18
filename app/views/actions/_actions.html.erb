@@ -1,4 +1,4 @@
-<div id="actions" class="d-flex flex-column mx-auto border border-dark">
+<div id="actions" class="d-flex flex-column mx-auto">
   <div class="bg-success d-flex flex-row">
     <% columnWidth = 100 / includeList.length() %>
     <% columnWidthCss = "width:"+ columnWidth.to_s + "%;" %>
@@ -19,7 +19,7 @@
         <%= link_to "Load More", load_more_actions_path(parent: parent, actionable: actionable, includeList: includeList, oldestActionId: actions.last.id),
           id: "load_more_actions_" + parent, 
           data: { turbo_stream: true }, 
-          class: "btn btn-primary ms-2 mt-2 mb-1 w-100"%>
+          class: "btn btn-outline-primary mb-1 w-100 rounded-0"%>
       </div>
     <% end %>
 </div>

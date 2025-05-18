@@ -10,7 +10,7 @@
     <% end %>
         <% if entries.length ==6 %>
             <div class="mx-1">
-                <%= link_to "Next", change_page_project_entries_path(project_id: project.id, status:status, focused_entry: entries[4],direction:"next"),
+                <%= link_to "Next", change_page_project_entries_path(project_id: project.id, status:status, page_size: 5, page:1),
                 id: "load_next_entries_" + status, 
                 data: { turbo_stream: true }, 
                 class: "btn btn-outline-primary w-100 rounded-0"%>

@@ -1,8 +1,10 @@
-<div id="<%= "action_section_"+parent %>">
-    <div class="d-flex flex-row ms-5 mb-5">
-        <h1 class="text-primary">Action History</h1>
-        <%= link_to "Expand", section_actions_path(parent: parent, actionable: actionable, includeList: includeList),
+<div id="<%= "action_section_"+parent %>" class = "border border-secondary bg-success mx-4 mb-5 rounded-3" style="--bs-bg-opacity: .5;">
+        <%= link_to section_actions_path(parent: parent, actionable: actionable, includeList: includeList),
         data: { turbo_stream: true },
-        class: "btn btn-primary ms-2"%>
-    </div>
+        class: "w-100 d-flex flex-row p-2" ,style:"text-decoration:none" do %>
+            <h1 class="text-primary my-auto ms-4">Action History</h1>
+            <div class="ms-auto me-5 my-auto">
+                <i class="custom-arrow-down"></i>
+             </div>
+        <% end %>
 </div>

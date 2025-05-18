@@ -11,5 +11,5 @@
       <%= link_to "Load More", load_more_comment_path(parent: parent, commentable: commentable, oldestCommentId: comments.last&.id),
       id: "load_more_comments_" + parent, 
       data: { turbo_stream: true }, 
-      class: "btn btn-primary ms-2 mt-2 mb-1 w-100"%>
+      class: "btn btn-outline-primary mb-1 w-100 rounded-0"%>
 <% end %>

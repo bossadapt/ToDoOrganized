@@ -121,7 +121,7 @@ class ProjectEntriesController < ApplicationController
           description: @descriptionOfChange
         )
         format.turbo_stream do
-          # TODO: but there has to be a way that does not force the users that are not even near that priority or on thiers only
+          # TODO: maybe do a custom websocket to ensure if someone is on page 8, dont get sent back to start
           if safe_params[:status].present? && safe_params[:status] != old_status
             # if moved between columns, refresh both columns
             # refresh old column
@@ -181,13 +181,14 @@ class ProjectEntriesController < ApplicationController
       end
     end
   end
+  #
   def change_page
-    # project_id: project.id, status:status, focused_entry: entries.last.id,direction:"prev"
+    # project_id, status, page_size, page
     # all being passed to change_page.turbo_stream.erb
     @project_id = params[:project_id]
     @status = params[:status]
-    @focused_entry = params[:focused_entry]
-    @direction = params[:direction]
+    @page_size = params[:page_size]
+    @page = params[:page]
     respond_to do |format|
       format.turbo_stream
     end

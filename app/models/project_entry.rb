@@ -7,7 +7,6 @@ class ProjectEntry < ApplicationRecord
   validates :priority, numericality: { greater_than_or_equal_to: -2_147_483_648, less_than_or_equal_to: 2_147_483_647 }
   # if changed make sure to fix change_page to prioritize the right order for pagination aaaaaaaalso project entry turbo stream updates
   scope :ordered, -> { order(priority: :desc, id: :asc) }
-  scope :rev_ordered, -> { order(priority: :asc, id: :desc) }
 
   after_create_commit do
     # update either assigned or new based on status
@@ -27,9 +26,6 @@ class ProjectEntry < ApplicationRecord
     )
   end
   after_update_commit do
-    # TODO: make it so that editing assigned moves it to assigned
-    # TODO: if update does not include move then just update the
-
     broadcast_replace_to(
       self,
       target: "project_entry_update_form",

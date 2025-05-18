@@ -1,8 +1,10 @@
-<div id="<%= "comment_section_"+parent %>">
-    <div class="d-flex flex-row ms-5 mb-5">
-        <h1 class="text-primary">Comments</h1>
-        <%= link_to "Expand", section_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
+<div id="<%= "comment_section_"+parent %>" class = "border border-secondary bg-success mx-4 mb-3 rounded-3" style="--bs-bg-opacity: .5;">
+        <%= link_to section_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
         data: { turbo_stream: true },
-        class: "btn btn-primary ms-2"%>
-    </div>
+        class: "w-100 d-flex flex-row p-2" ,style:"text-decoration:none" do %>
+            <h1 class="text-primary my-auto ms-4">Comments</h1>
+            <div class="ms-auto me-5 my-auto">
+                <i class="custom-arrow-down"></i>
+             </div>
+        <% end %>
 </div>

@@ -9,24 +9,29 @@
         commentable_type = "Project"
     end
 %>
-<div id="<%= "comment_section_"+parent %>">
-    <div class="d-flex flex-row ms-5 mb-1">
-        <h1 class="text-primary">Comments</h1>
-        <%= link_to "Collapse",
-        section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
+<div id="<%= "comment_section_"+parent %>" class = "border border-secondary bg-success mx-4 mb-3 rounded-3" style="--bs-bg-opacity: .5;">
+        <%= link_to section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
         data: { turbo_stream: true },
-        class: "btn btn-primary ms-2"%>
-    </div>
+        class: "w-100 d-flex flex-row p-2" ,style:"text-decoration:none" do %>
+            <h1 class="text-primary my-auto ms-4">Comments</h1>
+            <div class="ms-auto me-5 my-auto">
+                <i class="custom-arrow-up"></i>
+             </div>
+        <% end %>
+    <hr>
     <%= turbo_frame_tag dom_id(Comment.new), 
     src: new_comment_path(project_id: project.id, 
                         commentable_id: commentable.id, 
                         commentable_type: commentable.class), 
                         target:"_top" %>
+    <hr>
+
     <%= render partial:"comments/comments" , locals: {parent: parent,commentable: commentable} %>
-    <div class="d-flex flex-row justify-content-center">
-            <%= link_to "Collapse",
-            section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
-            data: { turbo_stream: true },
-            class: "btn btn-primary ms-2 mb-3 w-100"%>
-    </div>
+        <%= link_to section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
+        data: { turbo_stream: true },
+        class: "w-100 d-flex flex-row pt-3" ,style:"text-decoration:none" do %>
+            <div class="ms-auto mx-auto my-auto">
+                <i class="custom-arrow-up"></i>
+             </div>
+        <% end %>
 </div>

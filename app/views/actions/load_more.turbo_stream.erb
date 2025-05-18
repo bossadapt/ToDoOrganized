@@ -22,7 +22,7 @@
             <%= link_to "Load More", load_more_actions_path(parent: @parent, actionable: @actionable, includeList: @include_list, oldestActionId: actions.last.id),
             id: "load_more_actions_" + @parent, 
             data: { turbo_stream: true }, 
-            class: "btn btn-primary ms-2 mt-2 mb-3 w-100"%>
+            class: "btn btn-outline-primary mb-1 w-100 rounded-0"%>
     <% end %>
 <% end %>
 <% unless actions.empty? %>

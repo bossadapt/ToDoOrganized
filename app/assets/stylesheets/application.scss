@@ -18,12 +18,11 @@ form .field_with_errors {
   display: inline;
   width: 100%;
 }
-
 form .field_with_errors input,
 form .field_with_errors textarea,
 form .field_with_errors select {
-  border-color: #dc3545 !important; /* Force the style */
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; /* Force the style */
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; 
 }
 
 .field_with_errors .invalid-feedback {
@@ -34,3 +33,20 @@ form .field_with_errors select {
 
 }
 @import "custom_bootstrap";
+.custom-arrow-down {
+  border: solid $primary;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 9px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.custom-arrow-up {
+  border: solid $primary;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 9px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
