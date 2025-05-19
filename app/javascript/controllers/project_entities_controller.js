@@ -6,10 +6,8 @@ export default class extends Controller {
       this.cleanUpLooseEndActions(event)
     }
     clearForm(event){
-      console.log("Form clearing attempted");
 
         if (event.detail.success) {
-            console.log("Form clearing started");
             const modal = document.getElementById("newProjectEntryModal");
             const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modal)
             modalInstance.hide();
@@ -60,7 +58,6 @@ export default class extends Controller {
         
       }
       closeShowModal(){
-        console.log("closing show modal");
         const modal = document.getElementById("displayProjectEntryModal");
         const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modal)
         modalInstance.hide();

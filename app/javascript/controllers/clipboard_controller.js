@@ -7,9 +7,7 @@ export default class extends Controller {
 
   generate(event) {
     event.preventDefault()
-    console.log("generate was called")
     // Make AJAX request to generate invite
-    console.log("url: "+ this.urlValue)
     fetch(this.urlValue, {
       method: "GET",
       headers: {

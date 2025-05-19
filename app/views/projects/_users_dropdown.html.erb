@@ -1,7 +1,6 @@
 <div class="dropdown">
     <button
-      class="btn btn-secondary dropdown-toggle h-100"
-      style="margin-left:auto"
+      class="btn btn-outline-secondary dropdown-toggle w-100 h-100"
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
@@ -14,7 +13,7 @@
         <li class ="d-flex flex-row">
           <%= link_to user.full_name, user_path(user), class: "dropdown-item w-75", data: { turbo_frame: "_top" }%> 
           <% if project.owner.id == current_user.id && user.id != current_user.id %>
-            <%= link_to "Kick", kick_from_project_project_path(project,user_id: user.id), class:"btn btn-danger" %>
+            <%= link_to "Kick", kick_from_project_project_path(project,user_id: user.id), class:"btn btn-outline-danger" %>
           <% end %>
         </li>
       <% end %>

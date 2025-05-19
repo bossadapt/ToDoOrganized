@@ -1,18 +1,17 @@
-<%# TODO: make this look less jank, especially for the project dash board, probably fix the dashboard too while your there%>
-<div id="<%= dom_id project %>" class="d-flex flex-row mb-3"style="width:90vw; margin-left:5vw;margin-right:5vw;">
+<div id="<%= dom_id project %>" class="d-flex flex-row mb-3 w-100" style="max-width: 100%;">
       <%= render partial:"projects/project_editable", locals:{project:project} %>
-      <div class="d-flex flex-row" style="width:25vw">
+      <div class="d-flex flex-column flex-wrap" style="width:30%">
         <%= render "projects/users_dropdown", project: project%>
         <% if project.owner.id == current_user.id %>
-          <button class= "btn btn-primary ms-2" 
+          <button class= "btn btn-outline-primary flex-fill" 
           data-controller="clipboard"
           data-action= "click->clipboard#generate" 
           data-clipboard-url-value = "<%= generate_invite_project_path(project)%>">
-            Generate Invite
+            Make Invite
           </button>
-          <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-danger ms-2 h-100", data: { turbo: false }%>
+          <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-outline-danger w-100", data: { turbo: false }%>
         <% else %>
-          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-danger ms-2 h-100"%>
+          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-outline-danger h-100" ,form:{class:"flex-fill"}%>
         <% end %>
       </div>
   </div>

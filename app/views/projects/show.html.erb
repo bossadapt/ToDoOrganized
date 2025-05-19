@@ -1,8 +1,10 @@
 <%= turbo_frame_tag "project_frame" do %>
 <%= turbo_stream_from @project %>
-<%= render @project %>
+<div class="mx-4">
+    <%= render @project %>
+</div>
     <hr class="border border-primary mx-4">
-    <div id= "entries"> 
+    <div id= "entries" style="overflow-x:scroll;width:100vw"> 
         <%= render "project_entries/project_entries", project: @project, project_entries:@project.project_entries%>
     </div>
     <hr class="border border-primary mx-4">

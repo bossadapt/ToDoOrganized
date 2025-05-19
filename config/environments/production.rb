@@ -49,9 +49,9 @@ Rails.application.configure do
   # Replace the default in-process memory cache store with a durable alternative.
   config.cache_store = :solid_cache_store
   # DEBUGGING ONLY
-  # TODO: remove this before final deployment
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  config.log_level = :debug
+  # config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+  # config.log_level = :debug
+  # ####
   # needed for css, js and turbo
   config.assets.prefix = "/todoorganized/assets"
   config.action_cable.url = "wss://bossadapt.org/todoorganized/cable"
