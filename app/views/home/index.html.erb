@@ -1,13 +1,12 @@
-<div class="container h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+<div class="container h-100 d-flex flex-column justify-content-center align-items-center">
   <% if user_signed_in? %>
     <!-- Content for logged-in users -->
-    <div class="text-center">
-      <h1 class="mb-4 text-primary">Welcome back, <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
-      <h3>It's time to be productive</h3>
+      <h1 class="mb-4 text-center text-primary">Welcome back, <%= current_user.first_name %> <%= current_user.last_name %>!</h1>
+      <h3 class="text-center">It's time to be productive</h3>
        <%= link_to  "Get Back into the Projects", projects_path , class:"btn btn-outline-primary mb-5" %>
-    <%= render "actions/section_unexpanded", actionable: current_user.id, includeList: ["Project","Entry ID","Action Type", "Description","Time"],parent: "user" %> 
-
-    </div>
+      <div id="actions-container-index-home" class="w-100">
+        <%= render "actions/section_unexpanded", actionable: current_user.id, includeList: ["Project","Entry","Action Type", "Description","Time"],parent: "user" %> 
+      </div>
   <% else %>
     <!-- Content for visitors -->
     <div class="text-center">

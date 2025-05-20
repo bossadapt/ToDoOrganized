@@ -9,7 +9,7 @@
         commentable_type = "Project"
     end
 %>
-<div id="<%= "comment_section_"+parent %>" class = "border border-secondary bg-success mx-4 mb-3 rounded-3" style="--bs-bg-opacity: .5;">
+<div id="<%= "comment_section_"+parent %>" class = "border border-secondary bg-success mb-3 rounded-3" style="--bs-bg-opacity: .5;">
         <%= link_to section_reset_comment_path(parent: parent, commentable: commentable, commentableIsProject: commentableIsProject),
         data: { turbo_stream: true },
         class: "w-100 d-flex flex-row p-2" ,style:"text-decoration:none" do %>

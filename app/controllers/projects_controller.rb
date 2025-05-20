@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
     @actions = @project.actions.ordered
     respond_to do |format|
       format.turbo_stream
-      # format.html { render partial: "actions/actions", locals: { actions: @actions, parent: "", includeList: [ "Entry ID", "Action Type", "Author", "Description", "Time" ] } }
+      # format.html { render partial: "actions/actions", locals: { actions: @actions, parent: "", includeList: [ "Entry", "Action Type", "Author", "Description", "Time" ] } }
     end
   end
   def show_all_comments
@@ -80,10 +80,10 @@ class ProjectsController < ApplicationController
   def update
     description = ""
     if @project.title != project_params[:title]
-      description += "Title changed from #{@project.title} to #{project_params[:title]}\n"
+      description += "Title changed from '#{@project.title}' to '#{project_params[:title]}'\n"
     end
     if @project.description != project_params[:description]
-      description += "Desciption changed from #{@project.description} to #{project_params[:description]}\n"
+      description += "Desciption changed from '#{@project.description}' to '#{project_params[:description]}'\n"
     end
     if description == ""
       render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })

@@ -10,5 +10,5 @@
     <hr class="border border-primary mx-4">
 
     <%= render partial:"comments/section_unexpanded", locals: {parent: "proj", commentable: @project, commentableIsProject: true} %>
-    <%= render "actions/section_unexpanded", actionable: @project,includeList: ["Entry ID","Action Type","Author", "Description","Time"],parent: "" %> 
+    <%= render "actions/section_unexpanded", actionable: @project,includeList: ["Entry","Action Type","Author", "Description","Time"],parent: "" %> 
 <% end %>

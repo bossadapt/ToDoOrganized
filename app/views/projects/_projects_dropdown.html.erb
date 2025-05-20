@@ -8,11 +8,12 @@
       Projects
     </button>
 
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu w-75">
         <% projects.each do |project| %>
             <li id= <%= project.id.to_s + "Dropdown"%>><%= link_to project.title,
-            project_path(project), class: "dropdown-item",onclick: "history.pushState({}, '', '#{project_path(project)}')", data: { turbo_frame:
+            project_path(project), class: "dropdown-item w-100", style:"overflow: hidden; white-space: nowrap; text-overflow: ellipsis;",onclick: "history.pushState({}, '', '#{project_path(project)}')", data: { turbo_frame:
             "project_frame"} %> 
+            <hr>
         <% end %></li>
       <li><%= link_to "New Project", new_project_path, class: "dropdown-item" %></li> 
     </ul>

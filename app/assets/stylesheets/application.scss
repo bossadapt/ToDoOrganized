@@ -32,6 +32,22 @@ form .field_with_errors select {
   width: 20%;
 
 }
+//realized after doing this I essentialy wanted a static size lol, oh well
+@media only screen and (max-width: 800px) {
+  .w-25-75{
+    width:75%;
+  }
+}
+@media only screen and (min-width: 800px) {
+  .w-25-75{
+    width:50%;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .w-25-75{
+    width:25%;
+  }
+}
 @import "custom_bootstrap";
 .custom-arrow-down {
   border: solid $primary;

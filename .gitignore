@@ -9,7 +9,7 @@
 
 # Ignore all environment files.
 /.env*
-
+/public
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

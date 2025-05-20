@@ -10,39 +10,42 @@
 <% end %>
     <% Rails.logger.debug "includelist in action :"+includeList.nil?.to_s %>
 <% link_to_action_target = "" %>
-<% entry_id_text = "" %>
 <% 
-  if !action.project_entry.nil? && action.action_type != "Delete"
-    entry_id_text = action.project_entry.id
+  entry_text = "" 
+%>
+<% 
+  if !action.project_entry.nil? && action.action_type != "Delete" && includeList.include?("Entry")
+    #entry = ProjectEntry.find(action.project_entry.id)
+    entry_text = "#{action.project_entry.title} (#{action.project_entry.id})"
     link_to_action_target = project_entry_path(action.project_entry)
   elsif action.targeting_project_entry
-     entry_id_text ="Deleted Entry" 
+     entry_text ="Deleted Entry" 
      link_to_action_target = "javascript:void(0)"
   else 
-    entry_id_text = ""
+    entry_text = ""
     link_to_action_target = project_path(action.project)
   end 
 %>
 <div id="<%= dom_id action %>" class= "<%= color + " d-flex flex-row w-100 border-bottom border-dark m-0" %>" onclick="location.href=' <%=link_to_action_target %>'">
           <% if includeList.include?("Project") %>
-            <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.project.title%></h4>
+            <p class="text-break text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.project.title%></p>
           <% end %>
-          <% if includeList.include?("Entry ID") %>
-          <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>>
-            <%= entry_id_text %>
-          </h4>
+          <% if includeList.include?("Entry") %>
+          <p class="text-break text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>>
+            <%= entry_text %>
+          </p>
           <% end %>
           <% if includeList.include?("Action Type") %>
-            <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.action_type%></h4>
+            <p class="text-break text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.action_type%></p>
           <% end %>
           <% if includeList.include?("Author") %>
-            <h4 class="text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.author_fullname+" ("+action.author.id.to_s+")"%></h4>
+            <p class="text-break text-dark text-center  border-start border-end m-0", style=<%= columnWidthCss %>><%=action.author_fullname+" ("+action.author.id.to_s+")"%></p>
           <% end %>
           <% if includeList.include?("Description") %>
-            <%=simple_format(action.description,class: " border-start border-end text-center text-dark  m-0",style:"overflow-wrap: break-word;"+ columnWidthCss)%>
+            <%=simple_format(action.description,class: "text-break border-start border-end text-center text-dark  m-0",style:"overflow-wrap: break-word;"+ columnWidthCss)%>
           <% end %>
           <% if includeList.include?("Time") %>
-            <h4 class="text-dark text-center  border-start border-end m-0" , style=<%= columnWidthCss %>><%= action.created_at.localtime.strftime("%H:%M %m/ %d/ %Y") %></h4>
+            <p class="text-break text-dark text-center  border-start border-end m-0" , style=<%= columnWidthCss %>><%= action.created_at.localtime.strftime("%H:%M %m/ %d/ %Y") %></p>
           <% end %>
 </div>
 

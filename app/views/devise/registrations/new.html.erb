@@ -1,22 +1,22 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 <div class="d-flex flex-column justify-content-center align-items-center text-primary mt-5">
-    <h3 class="text-primary  mb-0 w-25">First Name</h3>
-    <%= f.text_field :first_name, autofocus: true, class:"w-25 mb-2"%>
+    <h3 class="text-primary  mb-0 w-25-75">First Name</h3>
+    <%= f.text_field :first_name, autofocus: true, class:"w-25-75 mb-2"%>
 
-    <h3 class="text-primary mb-0 w-25">Last Name</h3>
-    <%= f.text_field :last_name, autofocus: true,class:"w-25 mb-2" %>
+    <h3 class="text-primary mb-0 w-25-75">Last Name</h3>
+    <%= f.text_field :last_name, autofocus: true,class:"w-25-75 mb-2" %>
 
-    <h3 class="text-primary  mb-0 w-25">Email</h3>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class:"w-25 mb-2"%>
+    <h3 class="text-primary  mb-0 w-25-75">Email</h3>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class:"w-25-75 mb-2"%>
 
-    <h3 class="text-primary mb-0 text-start w-25">Password (<%= @minimum_password_length %> Characters)</h3>
-    <%= f.password_field :password, autocomplete: "new-password" ,class:"w-25 mb-2"%>
+    <h3 class="text-primary mb-0 text-start w-25-75">Password (<%= @minimum_password_length %> Characters)</h3>
+    <%= f.password_field :password, autocomplete: "new-password" ,class:"w-25-75 mb-2"%>
 
-    <h3 class="text-primary  mb-0 w-25">Password Confirmation</h3>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" ,class:"w-25 mb-3"%>
+    <h3 class="text-primary  mb-0 w-25-75">Password Confirmation</h3>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" ,class:"w-25-75 mb-3"%>
 
-    <%= f.submit "Sign up" ,class:"btn btn-secondary w-25 mb-4"%>
-   <%= link_to "Log In", new_user_session_path ,class:"btn btn-success text-primary w-25 mb-5"%>
+    <%= f.submit "Sign up" ,class:"btn btn-secondary w-25-75 mb-4"%>
+   <%= link_to "Log In", new_user_session_path ,class:"btn btn-success text-primary w-25-75 mb-5"%>
 </div>
 <% end %>

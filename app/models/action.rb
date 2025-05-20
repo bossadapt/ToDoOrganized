@@ -9,7 +9,7 @@ class Action < ApplicationRecord
       self.project,
       target: "actions_body",
       partial: "actions/action",
-      locals: { action: self, includeList: [ "Entry ID", "Action Type", "Author", "Description", "Time" ], columnWidthCss: "width:20%;" }
+      locals: { action: self, includeList: [ "Entry", "Action Type", "Author", "Description", "Time" ], columnWidthCss: "width:20%;" }
     )
     if !self.project_entry.nil?
       broadcast_prepend_to(
