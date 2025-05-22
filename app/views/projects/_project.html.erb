@@ -1,3 +1,4 @@
+<%= turbo_stream_from project.id.to_s + "_header" %>
 <div id="<%= dom_id project %>" class="d-flex flex-row mb-3 w-100" style="max-width: 100%;">
       <%= render partial:"projects/project_editable", locals:{project:project} %>
       <div class="d-flex flex-column flex-wrap" style="width:30%">
@@ -14,7 +15,7 @@
           <button class= "btn btn-outline-primary flex-fill" disabled>
             Make Invite
           </button>
-          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-outline-danger w-100"%>
+          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-outline-danger w-100",data: { turbo: false }%>
         <% end %>
       </div>
   </div>

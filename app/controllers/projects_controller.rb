@@ -103,7 +103,8 @@ class ProjectsController < ApplicationController
           )
           # unsure why this is needed even though there is a turbo frame setup but it is...
           format.turbo_stream do
-            Turbo::StreamsChannel.broadcast_replace_to @project, target: dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project }
+            # make to project title section should have a seprate stream so that the project dashborad also stays up to date
+            Turbo::StreamsChannel.broadcast_replace_to @project.id.to_s+"_header", target: dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project }
           end
           format.html { redirect_to @project, notice: "Project was successfully updated." }
           format.json { render :show, status: :ok, location: @project }
@@ -153,7 +154,7 @@ class ProjectsController < ApplicationController
       if !@project.users.include?(current_user)
         @project.users << current_user
         @project.save
-        Turbo::StreamsChannel.broadcast_append_to @project, target: @project.id.to_s + "_users_dropdown_contents", partial: "projects/user_entry_general", locals: { project: @project, user: current_user }
+        Turbo::StreamsChannel.broadcast_append_to @project.id.to_s+"_header", target: @project.id.to_s + "_users_dropdown_contents", partial: "projects/user_entry_general", locals: { project: @project, user: current_user }
         redirect_to project_path(@project), notice: "Joined Project"
       else
         redirect_to project_path(@project), alert: "Already apart of project"
@@ -166,8 +167,11 @@ class ProjectsController < ApplicationController
     @project.users.delete(current_user)
     @project.save
     respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to projects_path, notice: "Left project" }
+      format.html do
+        Rails.logger.debug "||||| RAN THE HTML"
+        Turbo::StreamsChannel.broadcast_remove_to @project.id.to_s+"_header", target: @project.id.to_s+"_users_dropdown_contents_"+current_user.id.to_s
+        redirect_to projects_path, notice: "Left project"
+      end
     end
   end
   def project_kick
@@ -176,7 +180,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         flash.now[:notice] = "User was kicked from project"
-        Turbo::StreamsChannel.broadcast_remove_to @project, target: @project.id.to_s+"_users_dropdown_contents_"+params[:user_id]
+        Turbo::StreamsChannel.broadcast_remove_to @project.id.to_s+"_header", target: @project.id.to_s+"_users_dropdown_contents_"+params[:user_id]
         render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
       end
       format.html do
