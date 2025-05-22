@@ -1,13 +1,7 @@
 <%= turbo_frame_tag dom_id(project, :edit)  ,style:"width:70%;max-width:70%"      do %>
 
   <div class="d-flex flex-column w-100",style="overflow:hidden;max-width:30px;">
-    <% if project.owner.id == current_user.id %>
-        <%= link_to project.title, edit_project_path(project), class:"my-auto h1 text-primary" ,style:"word-break: break-word"%> 
-      <% else %>
-      <h1  class="text-primary w-100" style="overflow:hidden;">
-        <%= project.title %>
-      </h1>
-      <% end %>
+    <%= link_to project.title, edit_project_path(project), class:"my-auto h1 text-primary" ,style:"word-break: break-word"%> 
     <p class="text-primary w-100">
       <% if project.description == "" %>
         No Descrption Provided

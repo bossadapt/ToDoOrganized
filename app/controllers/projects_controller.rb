@@ -103,7 +103,7 @@ class ProjectsController < ApplicationController
           )
           # unsure why this is needed even though there is a turbo frame setup but it is...
           format.turbo_stream do
-            render turbo_stream: turbo_stream.replace(dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project })
+            Turbo::StreamsChannel.broadcast_replace_to @project, target: dom_id(@project, :edit), partial: "projects/project_editable", locals: { project: @project }
           end
           format.html { redirect_to @project, notice: "Project was successfully updated." }
           format.json { render :show, status: :ok, location: @project }
@@ -153,6 +153,7 @@ class ProjectsController < ApplicationController
       if !@project.users.include?(current_user)
         @project.users << current_user
         @project.save
+        Turbo::StreamsChannel.broadcast_append_to @project, target: @project.id.to_s + "_users_dropdown_contents", partial: "projects/user_entry_general", locals: { project: @project, user: current_user }
         redirect_to project_path(@project), notice: "Joined Project"
       else
         redirect_to project_path(@project), alert: "Already apart of project"
@@ -172,11 +173,15 @@ class ProjectsController < ApplicationController
   def project_kick
     @project.users.delete(params[:user_id])
     @project.save
-    flash.now[:notice] = "Removed #{User.find(params[:user_id]).full_name} from project"
-    render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
     respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to projects_path, notice: "Kick from project" }
+      format.turbo_stream do
+        flash.now[:notice] = "User was kicked from project"
+        Turbo::StreamsChannel.broadcast_remove_to @project, target: @project.id.to_s+"_users_dropdown_contents_"+params[:user_id]
+        render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
+      end
+      format.html do
+        redirect_to projects_path, notice: "Kicked from project"
+      end
     end
   end
   private

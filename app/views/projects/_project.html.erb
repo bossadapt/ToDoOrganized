@@ -11,7 +11,10 @@
           </button>
           <%= button_to "Delete Project",  project, method: :delete, class: "btn btn-outline-danger w-100", data: { turbo: false }%>
         <% else %>
-          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-outline-danger h-100" ,form:{class:"flex-fill"}%>
+          <button class= "btn btn-outline-primary flex-fill" disabled>
+            Make Invite
+          </button>
+          <%= button_to "Leave Project", remove_from_project_project_path(project), method: :get, class: "btn btn-outline-danger w-100"%>
         <% end %>
       </div>
   </div>

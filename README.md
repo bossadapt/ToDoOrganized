@@ -38,7 +38,7 @@ The core data model consists of five interconnected entities:
 These are features that are currently missing or could use enhancement. Ideal areas of focus for forks or pull requests:
 * Devise settings for more secure measures(Email Verification, Password Resets and email changes)
 * Support for multiple assignees per task
-* Improved mobile responsiveness
+* Improved mobile interface
 * Filtering capabilities for comments, project entries, and action history
 * Smarter pagination that doesn't reset users to page 1 on updates
 * Integration of comments into the action history to use it as a notification system

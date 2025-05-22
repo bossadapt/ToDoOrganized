@@ -7,11 +7,10 @@ require "rails/all"
 Bundler.require(*Rails.groups)
 # Nice to haves:
 # TODO: allow mutliple assignees to the same project entry
-# TODO: possibly add comments to actions so it can be used as a notifcation feed
+# TODO: possibly add comments to actions and make the home page actions act as a notification stream
 # TODO: add filters to actions and project entries
 # TODO: add true pagination or at least make it delete an action/comment off the pile before adding another
 # TODO: make the home page a dashboard with the most recent actions , comments, available project entries
-# TODO: some dev ops stuff like adding a just that dosnt have to redeploy the whole docker and can instead rewrite the internals
 module ToDoOranized
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

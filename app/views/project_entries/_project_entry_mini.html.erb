@@ -21,7 +21,9 @@
   <% end %>
      <div class="w-100 border border-primary border-start-0 border-end-0" role="button"style="height:100%" data-controller="project-entities" data-action="click->project-entities#show" data-project-entities-url-value="<%= project_entry_path(project_entry, script_name: nil) %>">
       <div class="d-flex flex-row">
-        <h4 class="text-primary ms-1">
+        <h4 class="text-primary ms-1"  style="display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;overflow: hidden;">
             <%= project_entry.title %>
         </h4>
         <h4 class="ms-auto me-1 text-end text-danger">
@@ -31,7 +33,7 @@
       <hr class="my-0" style="border: 3px solid var(--primary);">
       <p class="mx-1 text-secondary" 
       style="display: -webkit-box;
-                  -webkit-line-clamp: 3;
+                  -webkit-line-clamp: 2;
                   -webkit-box-orient: vertical;overflow: hidden;">
         <%= project_entry.description %>
       </p> 
