@@ -5,6 +5,7 @@
 
 This app supports real-time collaboration through Turbo Streams (websockets), allowing users to see updates, comments, and changes as they happen. It also includes an action history log that provides accountability by recording all modifications to projects and entries — none of which can be deleted.
 
+## Demo Video On Youtube(Click To Play)
 [![Demo Video](https://i.ytimg.com/vi/MvMJa6k0ogg/hqdefault.jpg)](https://youtu.be/MvMJa6k0ogg)
 
 
