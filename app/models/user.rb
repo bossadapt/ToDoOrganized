@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :actions, foreign_key: "author_id"
   has_and_belongs_to_many :projects
   has_many :owned_projects, class_name: "Project", foreign_key: "owner_id"
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   def full_name
     "#{first_name} #{last_name}"
   end

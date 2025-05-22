@@ -1,6 +1,7 @@
 class ProjectEntriesController < ApplicationController
   before_action :set_project_entry, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
+  # before_action :valid_priority_present, only: %i[ create edit update ]
   before_action :user_is_edit_able, only: [ :edit, :update, :destroy ]
   before_action :user_is_apart_of_project, only: [ :show, :edit, :update, :destroy, :index ]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
@@ -54,6 +55,9 @@ class ProjectEntriesController < ApplicationController
   # POST /project_entries or /project_entries.json
   def create
     @project_entry = ProjectEntry.new(project_entry_params)
+    if !@project_entry.project.users.include?(current_user)
+      return # person was not apart of the project yet trying to create comments
+    end
     @project_entry.author = current_user
     Rails.logger.debug "creation happening 123321"
     @project_entry.author_fullname = current_user.full_name
@@ -194,6 +198,7 @@ class ProjectEntriesController < ApplicationController
     end
   end
   private
+
   def handle_move_change(safe_params)
     @action_type = "Move"
     @descriptionOfChange = "Moved from '#{@project_entry.status}' to '#{safe_params[:status]}'\n"

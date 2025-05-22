@@ -36,6 +36,9 @@ class CommentsController < ApplicationController
   # POST /comments or /comments.json
   def create
     @comment = Comment.new(comment_create_params)
+    if !@comment.project.users.include?(current_user)
+      return # person was not apart of the project yet trying to create comments
+    end
     @comment.author = current_user
     @comment.author_fullname = current_user.first_name + " " + current_user.last_name
     respond_to do |format|
