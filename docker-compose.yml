@@ -1,6 +1,9 @@
+name: todoorganized
+
 services:
   db:
     image: postgres:15
+    restart: unless-stopped
     env_file:
       - production-secret.env
     environment:
@@ -11,6 +14,7 @@ services:
 
   web:
     build: .
+    restart: unless-stopped
     depends_on:
       - db
     env_file:
